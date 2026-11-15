@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model GraveRecord {
+  id              Int       @id @default(autoincrement())
+  stt             Int?
+  maLo            String    @unique @map("ma_lo")
+  trangThai       String    @default("Trống") @map("trang_thai") // "Mai táng", "Mộ chờ", "Trống"
+  
+  // Thông tin người được cấp (người đã khuất / người đăng ký mộ chờ)
+  nguoiDuocCap    String    @map("nguoi_duoc_cap")
+  cccd            String?   @map("cccd")
+  danToc          String?   @default("Kinh") @map("dan_toc")
+  quocTich        String?   @default("Việt Nam") @map("quoc_tich")
+  ngaySinh        DateTime? @map("ngay_sinh")
+  ngayMat         DateTime? @map("ngay_mat")
+  quyetDinhCapDat String?   @map("quyet_dinh_cap_dat")
+  ghiChu          String?   @map("ghi_chu")
+  
+  // Thông tin người liên hệ (Đại diện 1-1)
+  nguoiLienHe     String?   @map("nguoi_lien_he")
+  soDienThoai     String?   @map("so_dien_thoai")
+  diaChi          String?   @map("dia_chi")
+  
+  isArchived      Boolean   @default(false) @map("is_archived")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@index([maLo])
+  @@index([trangThai])
+  @@index([nguoiDuocCap])
+  @@map("grave_records")
+}
+
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  fullName  String   @map("full_name")
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admin_users")
+}
