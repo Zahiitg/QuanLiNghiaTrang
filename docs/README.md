@@ -10,7 +10,7 @@
 
 - **Frontend & Fullstack Framework:** Next.js 14+ (App Router, Server & Client Components)
 - **Thiết kế & Giao diện:** Tailwind CSS với bộ nhận diện màu **Pastel Blue (Xanh dương pastel)** & **White (Trắng thanh tịnh)** theo chuẩn tâm linh, nhẹ nhàng, trang nhã.
-- **Cơ sở dữ liệu:** PostgreSQL (môi trường sản xuất trên VPS) / SQLite (môi trường phát triển cục bộ `file:./dev.db`) qua **Prisma ORM**.
+- **Cơ sở dữ liệu:** **Supabase (Cloud PostgreSQL)** — Quản lý dữ liệu trực quan online qua Table Editor, tự động sao lưu hàng ngày, hỗ trợ sẵn PostGIS và Storage lưu ảnh bia mộ/khai tử. Môi trường phát triển cục bộ linh hoạt qua Prisma ORM.
 - **Bản đồ:** Tích hợp Google Maps Embed API và liên kết điều hướng trực tiếp Google Maps / Apple Maps.
 - **Xử lý Excel:** SheetJS (`xlsx`) đọc/ghi khớp 100% định dạng file `CẤP ĐẤT NGHĨA TRANG 2026.xlsx`.
 - **Mã QR:** Module `qrcode` sinh mã QR chính thức phục vụ in biển bảng đặt tại cổng nghĩa trang.

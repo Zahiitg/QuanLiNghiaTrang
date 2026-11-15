@@ -343,7 +343,7 @@ INDEX: ma_lo, trang_thai, nguoi_duoc_cap (pg_trgm), nguoi_lien_he
 | :--- | :--- | :--- |
 | **Frontend** | **Next.js (React)** | Responsive, SEO tốt cho trang tra cứu công khai; hỗ trợ SSR giúp trang tải nhanh trên điện thoại 4G |
 | **Backend** | **Node.js (Express)** | Đồng bộ ngôn ngữ JS với Frontend; hệ sinh thái npm phong phú (xlsx, qrcode...) |
-| **Database** | **PostgreSQL** | Tìm kiếm tiếng Việt mạnh (`unaccent`, `pg_trgm`); bền vững, mở rộng tốt; sẵn sàng cho GIS Phase 2 |
+| **Database** | **Supabase (Cloud PostgreSQL)** | Thay thế PostgreSQL tự cài đặt: Quản trị trực quan dạng bảng như Excel, sao lưu tự động hàng ngày, hỗ trợ sẵn PostGIS và kho lưu ảnh bia mộ |
 | **Maps** | **Google Maps JavaScript API** | Nhúng bản đồ khu nghĩa trang; nút Dẫn đường mở Google Maps / Apple Maps |
 | **QR Code** | **qrcode (npm)** | Sinh QR trỏ về `https://nghiatrangtrada.vn` — in ra dán tại cổng nghĩa trang |
 | **Import/Export Excel** | **SheetJS (xlsx)** | Đọc/ghi trực tiếp file `CẤP ĐẤT NGHĨA TRANG 2026.xlsx` |
@@ -470,7 +470,7 @@ Nhấn "Dẫn đường đến Nghĩa trang" → Google Maps mở ra
 | 3 | **Người liên hệ** | Đúng 01 người liên hệ đại diện trên mỗi phần mộ. |
 | 4 | **Bản đồ & Định vị** | Bỏ tọa độ GPS từng mộ. Dùng Google Maps nhúng cấp độ nghĩa trang + nút chỉ đường dẫn tới cổng Nghĩa trang Trà Đa. |
 | 5 | **Mã QR** | 01 mã QR chung đặt tại cổng / bảng tin nghĩa trang trỏ về `nghiatrangtrada.vn`. |
-| 6 | **Công nghệ** | Frontend: **Next.js (React)** \| Backend: **Node.js (Express)** \| Database: **PostgreSQL**. |
+| 6 | **Công nghệ** | Frontend: **Next.js (React)** \| Backend: **Node.js (Express/Next.js API)** \| Database: **Supabase (Cloud PostgreSQL)**. |
 | 7 | **Thiết kế Giao diện** | Tối giản, trang nhã, không rối mắt. Tone màu chủ đạo: **Trắng & Xanh dương pastel**. |
 | 8 | **Mô hình vận hành & Chi phí** | **In-house IT** tự code và tự vận hành nội bộ. Tên miền: `nghiatrangtrada.vn`. |
 | 9 | **Dữ liệu các khu khác** | Khu A8 và Khu A1–A6 có định dạng cột tương tự file A7; sẽ được chuẩn hóa dữ liệu Excel và import dần qua tính năng Upload trên web sau khi hệ thống hoạt động. |
