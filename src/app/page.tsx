@@ -264,6 +264,16 @@ export default function HomePage() {
               >
                 Mộ chờ (Sinh phần)
               </button>
+              <button
+                onClick={() => setFilterStatus("Trống")}
+                className={`px-3 py-1.5 rounded-xl font-medium transition ${
+                  filterStatus === "Trống"
+                    ? "bg-emerald-600 text-white shadow-sm"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                Lô đất trống ({countTrong})
+              </button>
             </div>
           </div>
 
@@ -403,9 +413,13 @@ export default function HomePage() {
                         <strong className="text-slate-700">{formatDate(item.ngaySinh)}</strong>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Ngày mất:</span>
+                        <span className="text-slate-400">
+                          {item.trangThai === "Trống" ? "Hiện trạng:" : "Ngày mất:"}
+                        </span>
                         {item.trangThai === "Mộ chờ" ? (
                           <span className="text-amber-700 font-semibold">Chưa mất (Mộ chờ)</span>
+                        ) : item.trangThai === "Trống" ? (
+                          <span className="text-emerald-700 font-semibold">Lô đất dự trữ (Sẵn sàng cấp)</span>
                         ) : (
                           <strong className="text-slate-700">{formatDate(item.ngayMat)}</strong>
                         )}
