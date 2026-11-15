@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { formatDateVN } from "@/lib/vietnamese";
 import {
@@ -49,7 +50,10 @@ export default async function GraveDetailPage({ params }: Props) {
     notFound();
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nghiatrangtrada.vn";
+  const headersList = headers();
+  const host = headersList.get("host") || "localhost:3000";
+  const protocol = host.includes("localhost") || host.includes("192.168.") ? "http" : "https";
+  const baseUrl = `${protocol}://${host}`;
   const graveDetailUrl = `${baseUrl}/grave/${encodeURIComponent(grave.maLo)}`;
 
   let qrCodeDataUrl = "";
