@@ -17,7 +17,9 @@ import {
   X,
   ExternalLink,
   ShieldCheck,
-  Building
+  Layers,
+  MapPin,
+  Download
 } from "lucide-react";
 
 interface GraveRecord {
@@ -44,6 +46,7 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("ALL");
+  const [filterZone, setFilterZone] = useState("ALL");
   const [showAddModal, setShowAddModal] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -130,8 +133,14 @@ export default function AdminDashboardPage() {
   const totalMoCho = graves.filter((g) => g.trangThai === "Mộ chờ").length;
   const totalTrong = graves.filter((g) => g.trangThai === "Trống").length;
 
+  // Lọc dữ liệu hiển thị theo Tìm kiếm + Trạng thái + Phân khu
   const filteredGraves = graves.filter((g) => {
     const matchStatus = filterStatus === "ALL" || g.trangThai === filterStatus;
+    const matchZone =
+      filterZone === "ALL" ||
+      (filterZone === "A7" && g.maLo.startsWith("MTA7")) ||
+      (filterZone === "A8" && g.maLo.startsWith("MTA8"));
+
     const s = search.toLowerCase();
     const matchSearch =
       g.maLo.toLowerCase().includes(s) ||
@@ -139,23 +148,26 @@ export default function AdminDashboardPage() {
       (g.cccd && g.cccd.toLowerCase().includes(s)) ||
       (g.soDienThoai && g.soDienThoai.toLowerCase().includes(s)) ||
       (g.nguoiLienHe && g.nguoiLienHe.toLowerCase().includes(s));
-    return matchStatus && matchSearch;
+
+    return matchStatus && matchZone && matchSearch;
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-      {/* Top Header Card */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+      {/* CityWork Style Dashboard Header */}
       <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-blue-600 uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Phân Hệ Quản Trị Nội Bộ BQL</span>
+        <div className="space-y-1.5">
+          <div className="flex items-center space-x-2 text-xs font-bold text-blue-700 uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4 text-blue-600" />
+            <span>Phần Mềm Quản Trị Nghĩa Trang Đô Thị — Chuẩn GIS</span>
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            Quản Lý Hồ Sơ Nghĩa Trang Trà Đa
-          </h2>
-          <p className="text-xs text-slate-500">
-            Dữ liệu trực tuyến từ Supabase Cloud — UBND Xã Biển Hồ, TP. Pleiku
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            Ban Quản Lý Nghĩa Trang TP. Pleiku (Trà Đa)
+          </h1>
+          <p className="text-xs text-slate-500 flex items-center space-x-2">
+            <span>Cơ quan chủ quản: UBND TP. Pleiku / UBND xã Biển Hồ</span>
+            <span>•</span>
+            <span className="text-emerald-700 font-medium">Supabase Cloud PostgreSQL</span>
           </p>
         </div>
 
@@ -163,7 +175,7 @@ export default function AdminDashboardPage() {
         <div className="flex flex-wrap items-center gap-2.5">
           <Link
             href="/admin/qr-code"
-            className="inline-flex items-center space-x-1.5 px-3.5 py-2.5 bg-white border border-slate-200 hover:border-blue-400 text-slate-700 rounded-xl text-xs font-semibold shadow-2xs hover:bg-blue-50/30 transition-all"
+            className="inline-flex items-center space-x-1.5 px-3.5 py-2.5 bg-white border border-slate-200 hover:border-blue-400 text-slate-700 rounded-xl text-xs font-semibold shadow-2xs hover:bg-slate-50 transition-all"
           >
             <QrCode className="w-4 h-4 text-blue-600" />
             <span>In Mã QR Cổng</span>
@@ -174,13 +186,13 @@ export default function AdminDashboardPage() {
             className="inline-flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-md shadow-blue-500/20 transition-all active:scale-[0.99]"
           >
             <Plus className="w-4 h-4" />
-            <span>Thêm Mộ Mới</span>
+            <span>Tiếp Nhận Mộ Mới</span>
           </button>
 
           <button
             onClick={handleLogout}
             className="inline-flex items-center space-x-1.5 px-3.5 py-2.5 bg-white border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-xl text-xs font-semibold transition"
-            title="Đăng xuất khỏi hệ thống"
+            title="Đăng xuất khỏi phiên làm việc"
           >
             <LogOut className="w-4 h-4" />
             <span>Đăng Xuất</span>
@@ -188,78 +200,93 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Modern KPI Cards */}
+      {/* CityWork KPI Quản Lý Quỹ Đất An Táng */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">TỔNG HỒ SƠ</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">TỔNG LÔ SỐ HÓA</span>
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <LayoutGrid className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-extrabold text-slate-900">{total}</div>
-          <p className="text-[11px] text-slate-500">Đã số hóa tại Khu A7</p>
+          <div className="text-[11px] text-slate-500 flex items-center space-x-1">
+            <Layers className="w-3.5 h-3.5 text-blue-500" />
+            <span>Khu A7 hiện hành</span>
+          </div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-indigo-400">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">ĐÃ MAI TÁNG</span>
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">ĐÃ AN TÁNG</span>
+            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-indigo-600">{totalMaiTang}</div>
+          <div className="text-3xl font-extrabold text-blue-700">{totalMaiTang}</div>
           <div className="text-[11px] text-slate-500 flex items-center justify-between">
-            <span>Tỷ lệ lấp đầy:</span>
-            <strong className="text-indigo-700">{total > 0 ? Math.round((totalMaiTang / total) * 100) : 0}%</strong>
+            <span>Tỷ lệ sử dụng đất:</span>
+            <strong className="text-blue-700">{total > 0 ? Math.round((totalMaiTang / total) * 100) : 0}%</strong>
           </div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-amber-400">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">MỘ CHỜ</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">MỘ CHỜ / SINH PHẦN</span>
             <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
               <Clock className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-extrabold text-amber-600">{totalMoCho}</div>
-          <p className="text-[11px] text-slate-500">Đăng ký trước người cao tuổi</p>
+          <p className="text-[11px] text-slate-500">Đã đăng ký trước (trên 70 tuổi)</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
           <div className="flex items-center justify-between text-emerald-400">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">LÔ ĐẤT TRỐNG</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">LÔ TRỐNG / DỰ TRỮ</span>
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <FileText className="w-4 h-4" />
             </div>
           </div>
           <div className="text-3xl font-extrabold text-emerald-600">{totalTrong}</div>
-          <p className="text-[11px] text-slate-500">Sẵn sàng bố trí cấp đất</p>
+          <p className="text-[11px] text-slate-500">Sẵn sàng tiếp nhận hồ sơ</p>
         </div>
       </div>
 
-      {/* Main Table Section */}
+      {/* Bảng Dữ Liệu Hạ Tầng & Hồ Sơ Điện Tử */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden p-6 space-y-5">
-        {/* Controls Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        {/* Bộ lọc đa năng kiểu CityWork */}
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+          {/* Ô tìm kiếm */}
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
             <input
               type="text"
-              placeholder="Tìm theo Họ tên, Mã lô, CCCD, SĐT, Người liên hệ..."
+              placeholder="Tìm theo Tên, Mã lô, CCCD, SĐT, Người liên hệ..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
             />
           </div>
 
-          <div className="flex items-center space-x-2">
+          {/* Lọc Phân Khu & Trạng Thái */}
+          <div className="flex flex-wrap items-center gap-2">
+            <select
+              value={filterZone}
+              onChange={(e) => setFilterZone(e.target.value)}
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            >
+              <option value="ALL">Tất cả Phân khu</option>
+              <option value="A7">Phân khu A7 (185 lô)</option>
+              <option value="A8">Phân khu A8</option>
+            </select>
+
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             >
-              <option value="ALL">Tất cả trạng thái ({total})</option>
+              <option value="ALL">Tất cả Trạng thái ({total})</option>
               <option value="Mai táng">Đã Mai táng ({totalMaiTang})</option>
               <option value="Mộ chờ">Mộ chờ ({totalMoCho})</option>
               <option value="Trống">Lô Trống ({totalTrong})</option>
@@ -268,26 +295,26 @@ export default function AdminDashboardPage() {
             <button
               onClick={loadData}
               className="p-2 border border-slate-200 rounded-xl hover:bg-slate-100 text-slate-600 transition"
-              title="Tải lại dữ liệu từ Supabase"
+              title="Tải lại dữ liệu"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </button>
           </div>
         </div>
 
-        {/* Data Table */}
+        {/* Bảng dữ liệu 14 cột nghiệp vụ */}
         <div className="overflow-x-auto rounded-2xl border border-slate-200">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50/90 text-slate-600 font-bold border-b border-slate-200 tracking-wide uppercase text-[11px]">
+            <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase text-[11px] tracking-wider">
               <tr>
                 <th className="py-3 px-3.5">STT</th>
-                <th className="py-3 px-3.5">Mã Lô</th>
-                <th className="py-3 px-3.5">Trạng Thái</th>
+                <th className="py-3 px-3.5">Mã Định Danh Lô</th>
+                <th className="py-3 px-3.5">Hiện Trạng</th>
                 <th className="py-3 px-3.5">Người Được Cấp Đất</th>
                 <th className="py-3 px-3.5">Số CCCD</th>
                 <th className="py-3 px-3.5">Người Thân Liên Hệ</th>
                 <th className="py-3 px-3.5">Số Điện Thoại</th>
-                <th className="py-3 px-3.5">Trích Lục / Quyết Định</th>
+                <th className="py-3 px-3.5">Trích Lục / Giấy Tờ</th>
                 <th className="py-3 px-3.5">Địa Chỉ Thường Trú</th>
                 <th className="py-3 px-3.5 text-center">Xem</th>
               </tr>
@@ -302,7 +329,7 @@ export default function AdminDashboardPage() {
                     </td>
                     <td className="py-3 px-3.5">
                       {g.trangThai === "Mai táng" && (
-                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
                           Mai táng
                         </span>
                       )}
@@ -370,8 +397,8 @@ export default function AdminDashboardPage() {
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto space-y-6">
             <div className="flex justify-between items-center border-b border-slate-100 pb-4">
               <div>
-                <h3 className="font-extrabold text-lg text-slate-900">Thêm Mới Hồ Sơ Mộ Phần</h3>
-                <p className="text-xs text-slate-500">Dữ liệu sẽ được lưu trực tiếp vào cơ sở dữ liệu Supabase</p>
+                <h3 className="font-extrabold text-lg text-slate-900">Tiếp Nhận & Thêm Mới Hồ Sơ Mộ Phần</h3>
+                <p className="text-xs text-slate-500">Dữ liệu được cập nhật trực tiếp vào cơ sở dữ liệu Supabase Cloud</p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -384,7 +411,7 @@ export default function AdminDashboardPage() {
             <form onSubmit={handleAddSubmit} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-slate-700">Mã lô (VD: MTA7-757) *</label>
+                  <label className="font-bold text-slate-700">Mã lô định danh (VD: MTA7-757) *</label>
                   <input
                     type="text"
                     required
@@ -395,14 +422,14 @@ export default function AdminDashboardPage() {
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-slate-700">Trạng thái *</label>
+                  <label className="font-bold text-slate-700">Trạng thái cấp đất *</label>
                   <select
                     value={formData.trangThai}
                     onChange={(e) => setFormData({ ...formData, trangThai: e.target.value })}
                     className="w-full mt-1.5 p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                   >
                     <option value="Mai táng">Mai táng</option>
-                    <option value="Mộ chờ">Mộ chờ</option>
+                    <option value="Mộ chờ">Mộ chờ (Sinh phần)</option>
                     <option value="Trống">Trống</option>
                   </select>
                 </div>
