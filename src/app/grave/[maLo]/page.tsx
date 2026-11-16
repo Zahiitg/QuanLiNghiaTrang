@@ -154,7 +154,7 @@ export default async function GraveDetailPage({ params }: Props) {
               <span className="text-slate-400 font-medium">Ngày mất / Năm mất:</span>
               <p className="text-sm font-bold text-slate-800">
                 {grave.trangThai === "Mộ chờ" ? (
-                  <span className="text-amber-700 font-medium">Chưa mất (Hồ sơ mộ chờ)</span>
+                  <span className="text-amber-700 font-medium">Mộ chờ</span>
                 ) : (
                   formatDateVN(grave.ngayMat)
                 )}

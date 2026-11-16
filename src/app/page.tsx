@@ -525,7 +525,7 @@ const LOT_TABS: LotTab[] = [
                           </span>
                           {item.trangThai === "Mộ chờ" ? (
                             <span className="text-amber-700 font-semibold">
-                              Chưa mất (Mộ chờ)
+                              Mộ chờ
                             </span>
                           ) : item.trangThai === "Trống" ? (
                             <span className="text-emerald-700 font-semibold">
