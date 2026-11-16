@@ -133,13 +133,12 @@ export default function AdminDashboardPage() {
   const totalMoCho = graves.filter((g) => g.trangThai === "Mộ chờ").length;
   const totalTrong = graves.filter((g) => g.trangThai === "Trống").length;
 
-  // Lọc dữ liệu hiển thị theo Tìm kiếm + Trạng thái + Phân khu
+  // Lọc dữ liệu hiển thị theo Tìm kiếm + Trạng thái + Phân bố 32 Lô
   const filteredGraves = graves.filter((g) => {
     const matchStatus = filterStatus === "ALL" || g.trangThai === filterStatus;
     const matchZone =
       filterZone === "ALL" ||
-      (filterZone === "A7" && g.maLo.startsWith("MTA7")) ||
-      (filterZone === "A8" && g.maLo.startsWith("MTA8"));
+      g.maLo.toLowerCase().startsWith(`mta${filterZone.replace("A", "")}`);
 
     const s = search.toLowerCase();
     const matchSearch =
@@ -212,7 +211,7 @@ export default function AdminDashboardPage() {
           <div className="text-3xl font-extrabold text-slate-900">{total}</div>
           <div className="text-[11px] text-slate-500 flex items-center space-x-1">
             <Layers className="w-3.5 h-3.5 text-blue-500" />
-            <span>Khu A7 hiện hành</span>
+            <span>Phân bố: 32 Lô (MT.A1 – A32)</span>
           </div>
         </div>
 
@@ -276,9 +275,15 @@ export default function AdminDashboardPage() {
               onChange={(e) => setFilterZone(e.target.value)}
               className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             >
-              <option value="ALL">Tất cả Phân khu</option>
-              <option value="A7">Phân khu A7 (185 lô)</option>
-              <option value="A8">Phân khu A8</option>
+              <option value="ALL">Tất cả 32 Lô (MT.A1 – A32)</option>
+              <option value="A7">Lô MT.A7 (Đang sử dụng - 195 mộ)</option>
+              {Array.from({ length: 32 }, (_, i) => i + 1)
+                .filter((n) => n !== 7)
+                .map((n) => (
+                  <option key={n} value={`A${n}`}>
+                    Lô MT.A{n}
+                  </option>
+                ))}
             </select>
 
             <select

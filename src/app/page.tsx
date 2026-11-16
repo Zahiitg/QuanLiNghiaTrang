@@ -65,13 +65,17 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, [searchTerm, filterStatus]);
 
-  // Bộ lọc theo Khu (Dữ liệu hiện hành Khu A7)
+  // Bộ lọc theo Lô (Phân bố 32 Lô: MT.A1 - A32, hiện hành Lô MT.A7)
   const displayedResults = results.filter((item) => {
     if (selectedZone === "ALL") return true;
-    if (selectedZone === "A7") return item.maLo.startsWith("MTA7");
-    if (selectedZone === "A8") return item.maLo.startsWith("MTA8");
-    return true;
+    const lotNumber = selectedZone.replace("A", "");
+    return item.maLo.toLowerCase().startsWith(`mta${lotNumber}`);
   });
+
+  const getLoName = (maLo: string) => {
+    const match = maLo.match(/MTA(\d+)/i);
+    return match ? `Lô MT.A${match[1]}` : "Lô MT.A7";
+  };
 
   const countMaiTang = results.filter((r) => r.trangThai === "Mai táng").length;
   const countMoCho = results.filter((r) => r.trangThai === "Mộ chờ").length;
@@ -127,22 +131,22 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              Cổng Tra Cứu Số Hóa Mộ Phần Nghĩa Trang Trà Đa
+              Cổng Tra Cứu Thông Tin Mộ Phần Tại Nghĩa Trang Trà Đa
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               Ứng dụng công nghệ bản đồ số hóa quy hoạch phân lô, quản lý hiện trạng sử dụng đất an táng và hỗ trợ thân nhân tra cứu vị trí, chỉ đường thông minh tại xã Biển Hồ, TP. Pleiku, tỉnh Gia Lai.
             </p>
 
-            {/* Thông số quy hoạch nghĩa trang chuẩn GIS */}
+            {/* Thông số quy hoạch nghĩa trang chuẩn GIS: 32 Lô MT.A1 - A32 */}
             <div className="flex flex-wrap items-center gap-3 pt-2 text-xs">
               <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
                 <Layers className="w-3.5 h-3.5 text-blue-600" />
-                <span>Quy mô: <strong>~12.57 ha (9 phân khu)</strong></span>
+                <span>Phân bố: <strong>Tổng cộng 32 Lô (Tên Lô: MT.A1 – A32)</strong></span>
               </div>
               <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
                 <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
-                <span>Đang số hóa: <strong>Khu A7 & A8</strong></span>
+                <span>Đang số hóa dữ liệu: <strong>Lô MT.A7</strong></span>
               </div>
               <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
                 <Compass className="w-3.5 h-3.5 text-blue-600" />
@@ -203,33 +207,27 @@ export default function HomePage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-1">
           {/* Lọc theo Khu & Trạng thái */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            {/* Chọn Khu */}
-            <div className="flex items-center space-x-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
-              <span className="px-2 text-slate-500 font-semibold">Phân khu:</span>
-              <button
-                onClick={() => setSelectedZone("ALL")}
-                className={`px-3 py-1.5 rounded-lg font-medium transition ${
-                  selectedZone === "ALL" ? "bg-white text-blue-700 shadow-2xs font-bold" : "text-slate-600 hover:text-slate-900"
-                }`}
+            {/* Chọn Lô trong tổng cộng 32 Lô MT.A1 - A32 */}
+            <div className="flex items-center space-x-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+              <span className="px-1.5 text-slate-600 font-bold flex items-center space-x-1 text-xs">
+                <Layers className="w-3.5 h-3.5 text-blue-600" />
+                <span>Phân bố Lô:</span>
+              </span>
+              <select
+                value={selectedZone}
+                onChange={(e) => setSelectedZone(e.target.value)}
+                className="bg-white text-blue-700 font-bold px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               >
-                Tất cả khu
-              </button>
-              <button
-                onClick={() => setSelectedZone("A7")}
-                className={`px-3 py-1.5 rounded-lg font-medium transition ${
-                  selectedZone === "A7" ? "bg-white text-blue-700 shadow-2xs font-bold" : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                Khu A7 (Hiện hành)
-              </button>
-              <button
-                onClick={() => setSelectedZone("A8")}
-                className={`px-3 py-1.5 rounded-lg font-medium transition ${
-                  selectedZone === "A8" ? "bg-white text-blue-700 shadow-2xs font-bold" : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                Khu A8 (Quy hoạch)
-              </button>
+                <option value="ALL">Tất cả 32 Lô (MT.A1 – A32)</option>
+                <option value="A7">Lô MT.A7 (Đang sử dụng - 195 mộ)</option>
+                {Array.from({ length: 32 }, (_, i) => i + 1)
+                  .filter((n) => n !== 7)
+                  .map((n) => (
+                    <option key={n} value={`A${n}`}>
+                      Lô MT.A{n}
+                    </option>
+                  ))}
+              </select>
             </div>
 
             {/* Chọn Trạng thái */}
@@ -311,7 +309,7 @@ export default function HomePage() {
                 <span>Bản Đồ Không Gian Số Hóa Nghĩa Trang Trà Đa (TP. Pleiku)</span>
               </h3>
               <p className="text-xs text-slate-500">
-                Hiển thị phạm vi quy hoạch 9 phân khu và vị trí tiếp nhận an táng Khu A7
+                Hiển thị sơ đồ phân bố tổng cộng 32 Lô (Tên Lô: MT.A1 – A32) và vị trí tiếp nhận an táng tại Lô MT.A7
               </p>
             </div>
             <a
@@ -391,7 +389,9 @@ export default function HomePage() {
                         <span className="font-mono text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
                           {item.maLo}
                         </span>
-                        <span className="text-[11px] text-slate-400 font-medium">Khu A7</span>
+                        <span className="text-[11px] text-blue-800 bg-blue-50/80 px-2 py-0.5 rounded font-semibold">
+                          {getLoName(item.maLo)}
+                        </span>
                       </div>
                       {getStatusBadge(item.trangThai)}
                     </div>

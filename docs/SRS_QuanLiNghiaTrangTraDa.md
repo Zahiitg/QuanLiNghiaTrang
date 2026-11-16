@@ -31,9 +31,9 @@ Xây dựng một Web Application (Responsive — hoạt động tốt trên má
 | **Cơ quan chủ quản** | UBND TP. Pleiku / Sở Xây dựng tỉnh Gia Lai |
 | **Diện tích** | ~12,57 ha (đang sử dụng); quy hoạch ~15 ha |
 | **Loại hình** | Nghĩa trang đô thị công cộng tập trung |
-| **Cơ cấu phân cấp** | Khu → Mã lô |
-| **Tổng số khu** | 9 khu (A1 → A9), mỗi khu ~2 ha |
-| **Tình trạng vận hành** | 8 khu đã đưa vào sử dụng (A1–A6, A7, A8); dữ liệu số hóa hiện tại từ **Khu A7 & A8** |
+| **Cơ cấu phân cấp** | Tổng cộng 32 Lô (Tên Lô: MT.A1 → MT.A32) |
+| **Tổng số lô quy hoạch** | 32 Lô (MT.A1 → MT.A32) |
+| **Tình trạng vận hành** | Dữ liệu số hóa hiện tại từ Lô MT.A7 (MTA7-572 → MTA7-756) |
 | **Tên miền website** | [nghiatrangtrada.vn](https://nghiatrangtrada.vn) |
 | **Vận hành CNTT** | In-house IT (nhân sự CNTT nội bộ của đơn vị quản lý) |
 
@@ -91,26 +91,24 @@ Xây dựng một Web Application (Responsive — hoạt động tốt trên má
 
 ### 3.1 Cấu trúc phân cấp Nghĩa trang
 
+Phân bố: **Tổng cộng 32 Lô (Tên Lô: MT.A1 – A32)**
+
 ```
-Nghĩa trang Trà Đa (~12,57 ha — 9 khu, mỗi khu ~2 ha)
-├── Khu A1  (đã sử dụng — dữ liệu cũ, nhập sau)
-├── Khu A2  (đã sử dụng — dữ liệu cũ, nhập sau)
-├── Khu A3  (đã sử dụng — dữ liệu cũ, nhập sau)
-├── Khu A4  (đã sử dụng — dữ liệu cũ, nhập sau)
-├── Khu A5  (đã sử dụng — dữ liệu cũ, nhập sau)
-├── Khu A6  (đã sử dụng — dữ liệu cũ, nhập sau)
-├── Khu A7  ✅ Dữ liệu có sẵn — 185 lô (MTA7-572 → MTA7-756)
-│           ├── 121 lô Mai táng
-│           └── 60 lô Mộ chờ
-├── Khu A8  ✅ Dữ liệu có sẵn (theo file Lo MT A7 đc.pdf)
-└── Khu A9  (chưa đưa vào sử dụng)
+Nghĩa trang Trà Đa (~12,57 ha — Tổng cộng 32 Lô: MT.A1 → MT.A32)
+├── Lô MT.A1 → MT.A6  (đã sử dụng — dữ liệu cũ, nhập sau)
+├── Lô MT.A7  ✅ Dữ liệu có sẵn — 185 lô (MTA7-572 → MTA7-756)
+│             ├── 121 lô Mai táng
+│             ├── 60 lô Mộ chờ
+│             └── Các lô đất trống quy hoạch dự trữ (MTA7-757 → MTA7-766...)
+├── Lô MT.A8  ✅ Dữ liệu có sẵn (theo file Lo MT A7 đc.pdf)
+└── Lô MT.A9 → MT.A32 (quy hoạch khai thác theo các giai đoạn)
 ```
 
 > [!NOTE]
 > **Quy ước Mã lô (Mã mộ):** Hệ thống sử dụng nguyên mã lô có sẵn theo thực tế nghiệp vụ.
-> - Khu A7: `MTA7-xxx` (ví dụ: `MTA7-572`, `MTA7-756`)
-> - Khu A8: Quy ước tương tự (cần xác nhận prefix khi nhập liệu khu A8)
-> - Các khu cũ (A1–A6): Giữ nguyên mã lô hiện hành khi import dữ liệu lịch sử
+> - Lô MT.A7: `MTA7-xxx` (ví dụ: `MTA7-572`, `MTA7-756`)
+> - Lô MT.A8: `MTA8-xxx` (theo quy ước tương tự)
+> - Các lô MT.A1 – MT.A32: Giữ nguyên mã lô khi import dữ liệu lịch sử hoặc cấp mới.
 
 ### 3.2 Bảng dữ liệu chính: `Hồ sơ Mộ` (grave_records)
 

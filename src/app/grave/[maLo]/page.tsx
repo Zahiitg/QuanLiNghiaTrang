@@ -75,6 +75,9 @@ export default async function GraveDetailPage({ params }: Props) {
     cemeteryName
   )}`;
 
+  const matchLo = grave.maLo.match(/MTA(\d+)/i);
+  const loName = matchLo ? `Lô MT.A${matchLo[1]}` : "Lô MT.A7";
+
   const getStatusBadge = (status: string) => {
     if (status === "Mai táng") {
       return (
@@ -166,10 +169,10 @@ export default async function GraveDetailPage({ params }: Props) {
                 <MapPin className="w-4 h-4 text-blue-600" />
                 <span>Vị trí trên sơ đồ quy hoạch:</span>
               </span>
-              <span className="font-mono font-bold text-blue-700">Khu A7 · {grave.maLo}</span>
+              <span className="font-mono font-bold text-blue-700">{loName} · {grave.maLo}</span>
             </div>
             <p className="text-slate-600 leading-relaxed">
-              Phần mộ nằm tại <strong>Khu A7</strong>, Nghĩa trang Trà Đa (xã Biển Hồ, TP. Pleiku). Khi đến nơi, quý thân nhân xuất trình Mã lô tại cổng để được cán bộ quản trang dẫn đường đến đúng vị trí.
+              Phần mộ nằm tại <strong>{loName}</strong> (thuộc phân bố quy hoạch 32 Lô: MT.A1 – A32), Nghĩa trang Trà Đa (xã Biển Hồ, TP. Pleiku). Khi đến nơi, quý thân nhân xuất trình Mã lô tại cổng để được cán bộ quản trang dẫn đường đến đúng vị trí.
             </p>
           </div>
 
