@@ -2,10 +2,10 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nghĩa trang Trà Đa - TP. Pleiku | Cổng Tra cứu Mộ phần Trực tuyến",
-  description: "Hệ thống số hóa và tra cứu hồ sơ mộ phần Nghĩa trang TP. Pleiku (Nghĩa trang Trà Đa), UBND xã Biển Hồ, tỉnh Gia Lai.",
-  keywords: ["nghĩa trang trà đa", "nghiatrangtrada", "nghĩa trang pleiku", "biển hồ", "tra cứu mộ phần gia lai"],
-  authors: [{ name: "UBND xã Biển Hồ - TP. Pleiku" }],
+  title: "Nghĩa trang Trà Đa - Xã Biển Hồ, Gia Lai | Cổng Tra cứu Mộ phần Trực tuyến",
+  description: "Hệ thống số hóa và tra cứu hồ sơ mộ phần Nghĩa trang Trà Đa, xã Biển Hồ, tỉnh Gia Lai.",
+  keywords: ["nghĩa trang trà đa", "nghiatrangtrada", "nghĩa trang biển hồ gia lai", "biển hồ", "tra cứu mộ phần gia lai"],
+  authors: [{ name: "Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai" }],
 };
 
 export const viewport: Viewport = {
@@ -79,7 +79,7 @@ export default function RootLayout({
               <div className="space-y-2">
                 <h4 className="font-bold text-slate-900 text-sm">📍 Địa chỉ & Liên hệ</h4>
                 <p className="text-slate-500 leading-relaxed">
-                  <strong>Vị trí nghĩa trang:</strong> Xã Biển Hồ, TP. Pleiku, tỉnh Gia Lai<br />
+                  <strong>Vị trí nghĩa trang:</strong> Xã Biển Hồ, tỉnh Gia Lai<br />
                   <strong>Cơ quan tiếp nhận hồ sơ:</strong> Ban Quản lý dịch vụ công Quy Nhơn
                 </p>
               </div>

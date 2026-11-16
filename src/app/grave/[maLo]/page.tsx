@@ -70,7 +70,7 @@ export default async function GraveDetailPage({ params }: Props) {
     console.error("Lỗi sinh QR:", e);
   }
 
-  const cemeteryName = "Nghĩa trang Trà Đa, Xã Biển Hồ, TP. Pleiku, Gia Lai";
+  const cemeteryName = "Nghĩa trang Trà Đa, Xã Biển Hồ, Tỉnh Gia Lai";
   const googleMapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
     cemeteryName
   )}`;
@@ -138,7 +138,7 @@ export default async function GraveDetailPage({ params }: Props) {
                 {grave.nguoiDuocCap}
               </h1>
               <p className="text-xs text-slate-500">
-                Hồ sơ an táng đã số hóa • Nghĩa trang thành phố Pleiku (Trà Đa)
+                Hồ sơ an táng đã số hóa • Nghĩa trang Trà Đa (Xã Biển Hồ, Gia Lai)
               </p>
             </div>
           </div>
@@ -172,7 +172,7 @@ export default async function GraveDetailPage({ params }: Props) {
               <span className="font-mono font-bold text-blue-700">{loName} · {grave.maLo}</span>
             </div>
             <p className="text-slate-600 leading-relaxed">
-              Phần mộ nằm tại <strong>{loName}</strong> (thuộc phân bố quy hoạch 32 Lô: MT.A1 – A32), Nghĩa trang Trà Đa (xã Biển Hồ, TP. Pleiku). Khi đến nơi, quý thân nhân xuất trình Mã lô tại cổng để được cán bộ quản trang dẫn đường đến đúng vị trí.
+              Phần mộ nằm tại <strong>{loName}</strong> (thuộc phân bố quy hoạch 32 Lô: MT.A1 – A32), Nghĩa trang Trà Đa (Xã Biển Hồ, tỉnh Gia Lai). Khi đến nơi, quý thân nhân xuất trình Mã lô tại cổng để được cán bộ quản trang dẫn đường đến đúng vị trí.
             </p>
           </div>
 
@@ -218,7 +218,7 @@ export default async function GraveDetailPage({ params }: Props) {
                 <Compass className="w-4 h-4 text-blue-600" />
                 <span>Bản Đồ Không Gian Nghĩa Trang</span>
               </h3>
-              <span className="text-[11px] text-slate-400">TP. Pleiku</span>
+              <span className="text-[11px] text-slate-400">Xã Biển Hồ, Gia Lai</span>
             </div>
 
             {/* Khung Bản Đồ */}
@@ -231,7 +231,7 @@ export default async function GraveDetailPage({ params }: Props) {
                 loading="lazy"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
-                src="https://maps.google.com/maps?q=Ngh%C4%A9a+trang+Tr%C3%A0+%C4%90a,+X%C3%A3+Bi%E1%BB%83n+H%E1%BB%93,+Th%C3%A0nh+ph%E1%BB%91+Pleiku,+Gia+Lai&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=Ngh%C4%A9a+trang+Tr%C3%A0+%C4%90a,+X%C3%A3+Bi%E1%BB%83n+H%E1%BB%93,+Gia+Lai&t=&z=15&ie=UTF8&iwloc=&output=embed"
               />
             </div>
 
@@ -255,10 +255,10 @@ export default async function GraveDetailPage({ params }: Props) {
           <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4 space-y-2 text-xs">
             <div className="flex items-center space-x-2 text-slate-800 font-bold">
               <Building2 className="w-4 h-4 text-blue-600" />
-              <span>Ban Quản lý Nghĩa trang TP. Pleiku</span>
+              <span>Ban Quản lý dịch vụ công Quy Nhơn (Nghĩa trang Trà Đa)</span>
             </div>
             <p className="text-slate-500 leading-relaxed">
-              Trụ sở tiếp nhận thủ tục tại UBND xã Biển Hồ. Nếu cần hỗ trợ khẩn cấp tại hiện trường, vui lòng gặp trực tiếp cán bộ thường trực tại cổng nghĩa trang.
+              Cơ quan tiếp nhận hồ sơ: Ban Quản lý dịch vụ công Quy Nhơn. Nếu cần hỗ trợ khẩn cấp tại hiện trường, vui lòng gặp trực tiếp cán bộ thường trực tại cổng nghĩa trang.
             </p>
           </div>
         </div>

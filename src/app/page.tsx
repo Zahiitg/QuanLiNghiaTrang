@@ -93,14 +93,20 @@ const LOT_TABS: LotTab[] = [
     setCurrentPage(1);
   }, [searchTerm, filterStatus, selectedZone]);
 
-  // ── Lọc + sắp xếp ngược (mới nhất lên đầu) ───────────────────────────────
+  // ── Lọc + sắp xếp (Mộ đã cấp mới nhất đến cũ trước, mộ trống sau cùng) ───
   const filteredResults = useMemo(() => {
     const zoneFiltered = results.filter((item) => {
       if (selectedZone === "ALL") return true;
       const lotNum = selectedZone.replace("A", "");
       return item.maLo.toLowerCase().startsWith(`mta${lotNum}`);
     });
-    return [...zoneFiltered].sort((a, b) => (b.stt ?? 0) - (a.stt ?? 0));
+    return [...zoneFiltered].sort((a, b) => {
+      const aIsTrong = a.trangThai === "Trống";
+      const bIsTrong = b.trangThai === "Trống";
+      if (aIsTrong && !bIsTrong) return 1;
+      if (!aIsTrong && bIsTrong) return -1;
+      return (b.stt ?? 0) - (a.stt ?? 0);
+    });
   }, [results, selectedZone]);
 
   // ── Phân trang ────────────────────────────────────────────────────────────
@@ -200,7 +206,7 @@ const LOT_TABS: LotTab[] = [
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               Ứng dụng công nghệ bản đồ số hóa quy hoạch phân lô, quản lý hiện
               trạng sử dụng đất an táng và hỗ trợ thân nhân tra cứu vị trí, chỉ
-              đường thông minh tại xã Biển Hồ, TP. Pleiku, tỉnh Gia Lai.
+              đường thông minh tại xã Biển Hồ, tỉnh Gia Lai.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2 text-xs">
@@ -390,7 +396,7 @@ const LOT_TABS: LotTab[] = [
             <div>
               <h3 className="font-bold text-base text-slate-900 flex items-center space-x-2">
                 <MapIcon className="w-5 h-5 text-blue-600" />
-                <span>Bản Đồ Không Gian Số Hóa Nghĩa Trang Trà Đa (TP. Pleiku)</span>
+                <span>Bản Đồ Không Gian Số Hóa Nghĩa Trang Trà Đa (Xã Biển Hồ, Gia Lai)</span>
               </h3>
               <p className="text-xs text-slate-500">
                 Hiển thị sơ đồ phân bố tổng cộng 32 Lô (Tên Lô: MT.A1 – A32)
@@ -398,7 +404,7 @@ const LOT_TABS: LotTab[] = [
               </p>
             </div>
             <a
-              href="https://www.google.com/maps/dir/?api=1&destination=Ngh%C4%A9a+trang+Tr%C3%A0+%C4%90a,+X%C3%A3+Bi%E1%BB%83n+H%E1%BB%93,+Th%C3%A0nh+ph%E1%BB%91+Pleiku,+Gia+Lai"
+              href="https://www.google.com/maps/dir/?api=1&destination=Ngh%C4%A9a+trang+Tr%C3%A0+%C4%90a,+X%C3%A3+Bi%E1%BB%83n+H%E1%BB%93,+Gia+Lai"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition"
@@ -417,7 +423,7 @@ const LOT_TABS: LotTab[] = [
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              src="https://maps.google.com/maps?q=Ngh%C4%A9a+trang+Tr%C3%A0+%C4%90a,+X%C3%A3+Bi%E1%BB%83n+H%E1%BB%93,+Th%C3%A0nh+ph%E1%BB%91+Pleiku,+Gia+Lai&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=Ngh%C4%A9a+trang+Tr%C3%A0+%C4%90a,+X%C3%A3+Bi%E1%BB%83n+H%E1%BB%93,+Gia+Lai&t=&z=16&ie=UTF8&iwloc=&output=embed"
             />
           </div>
 

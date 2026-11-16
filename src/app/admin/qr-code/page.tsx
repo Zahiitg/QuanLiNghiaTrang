@@ -144,7 +144,7 @@ export default function AdminQrCodePage() {
             <span>MÃ QR TRA CỨU CÔNG CỘNG CHÍNH THỨC</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 uppercase tracking-tight">
-            UBND THÀNH PHỐ PLEIKU — UBND XÃ BIỂN HỒ
+            BAN QUẢN LÝ DỊCH VỤ CÔNG QUY NHƠN — SỞ XÂY DỰNG TỈNH GIA LAI
           </h2>
           <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700 uppercase tracking-tight">
             NGHĨA TRANG TRÀ ĐA

@@ -161,10 +161,10 @@ export default function AdminDashboardPage() {
             <span>Phần Mềm Quản Trị Nghĩa Trang Đô Thị — Chuẩn GIS</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            Ban Quản Lý Nghĩa Trang TP. Pleiku (Trà Đa)
+            Ban Quản Lý Nghĩa Trang Trà Đa (Xã Biển Hồ, Gia Lai)
           </h1>
           <p className="text-xs text-slate-500 flex items-center space-x-2">
-            <span>Cơ quan chủ quản: UBND TP. Pleiku / UBND xã Biển Hồ</span>
+            <span>Cơ quan chủ quản: Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai</span>
             <span>•</span>
             <span className="text-emerald-700 font-medium">Supabase Cloud PostgreSQL</span>
           </p>

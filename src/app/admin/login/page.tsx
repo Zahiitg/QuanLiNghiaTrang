@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
             </div>
             <h2 className="text-xl font-bold text-slate-900">Đăng Nhập Quản Trị</h2>
             <p className="text-xs text-slate-500">
-              Dành riêng cho cán bộ Ban Quản lý Nghĩa trang & UBND xã Biển Hồ
+              Dành riêng cho cán bộ Ban Quản lý dịch vụ công Quy Nhơn
             </p>
           </div>
 
