@@ -69,10 +69,10 @@ export default function RootLayout({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6 border-b border-slate-100 text-xs">
               <div className="space-y-2">
                 <h4 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
-                  <span>🏛️ Ban Quản lý Nghĩa trang TP. Pleiku</span>
+                  <span>🏛️ Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai</span>
                 </h4>
                 <p className="text-slate-500 leading-relaxed">
-                  Đơn vị chịu trách nhiệm quy hoạch, quản lý quỹ đất an táng và hỗ trợ thân nhân thăm viếng theo quy định của UBND thành phố Pleiku.
+                  Đơn vị chịu trách nhiệm quy hoạch, quản lý quỹ đất an táng và hỗ trợ thân nhân thăm viếng theo quy định.
                 </p>
               </div>
 
@@ -80,15 +80,14 @@ export default function RootLayout({
                 <h4 className="font-bold text-slate-900 text-sm">📍 Địa chỉ & Liên hệ</h4>
                 <p className="text-slate-500 leading-relaxed">
                   <strong>Vị trí nghĩa trang:</strong> Xã Biển Hồ, TP. Pleiku, tỉnh Gia Lai<br />
-                  <strong>Cơ quan tiếp nhận hồ sơ:</strong> UBND xã Biển Hồ, TP. Pleiku
+                  <strong>Cơ quan tiếp nhận hồ sơ:</strong> Ban Quản lý dịch vụ công Quy Nhơn
                 </p>
               </div>
 
               <div className="space-y-2">
                 <h4 className="font-bold text-slate-900 text-sm">🕒 Giờ làm việc</h4>
                 <p className="text-slate-500 leading-relaxed">
-                  Thứ Hai — Thứ Sáu: 07:00 – 11:30 & 13:30 – 17:00<br />
-                  Bộ phận quản trang thường trực tất cả các ngày trong tuần.
+                  24/7 Bộ phận quản trang thường trực tất cả các ngày trong tuần.
                 </p>
               </div>
             </div>
