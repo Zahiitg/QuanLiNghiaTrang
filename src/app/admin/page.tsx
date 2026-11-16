@@ -308,70 +308,73 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Bảng dữ liệu 14 cột nghiệp vụ */}
-        <div className="overflow-x-auto rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase text-[11px] tracking-wider">
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 uppercase text-[11px] tracking-wider whitespace-nowrap">
               <tr>
-                <th className="py-3 px-3.5">STT</th>
-                <th className="py-3 px-3.5">Mã Định Danh Lô</th>
-                <th className="py-3 px-3.5">Hiện Trạng</th>
-                <th className="py-3 px-3.5">Người Được Cấp Đất</th>
-                <th className="py-3 px-3.5">Số CCCD</th>
-                <th className="py-3 px-3.5">Người Thân Liên Hệ</th>
-                <th className="py-3 px-3.5">Số Điện Thoại</th>
-                <th className="py-3 px-3.5">Trích Lục / Giấy Tờ</th>
-                <th className="py-3 px-3.5">Địa Chỉ Thường Trú</th>
-                <th className="py-3 px-3.5 text-center">Xem</th>
+                <th className="py-3 px-3 w-12 text-center">STT</th>
+                <th className="py-3 px-3.5 whitespace-nowrap">Mã Lô</th>
+                <th className="py-3 px-3.5 whitespace-nowrap">Hiện Trạng</th>
+                <th className="py-3 px-3.5 whitespace-nowrap min-w-[160px]">Người Được Cấp Đất</th>
+                <th className="py-3 px-3.5 whitespace-nowrap min-w-[120px]">Số CCCD</th>
+                <th className="py-3 px-3.5 whitespace-nowrap min-w-[150px]">Người Thân Liên Hệ</th>
+                <th className="py-3 px-3.5 whitespace-nowrap min-w-[120px]">Số Điện Thoại</th>
+                <th className="py-3 px-3.5 whitespace-nowrap min-w-[220px]">Trích Lục / Giấy Tờ</th>
+                <th className="py-3 px-3.5 whitespace-nowrap min-w-[240px]">Địa Chỉ Thường Trú</th>
+                <th className="py-3 px-3.5 text-center whitespace-nowrap w-14">Xem</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
               {filteredGraves.length > 0 ? (
                 filteredGraves.map((g, idx) => (
                   <tr key={g.id} className="hover:bg-blue-50/40 transition">
-                    <td className="py-3 px-3.5 text-slate-400 font-mono">{g.stt || idx + 1}</td>
-                    <td className="py-3 px-3.5 font-mono font-bold text-blue-700 bg-blue-50/40">
+                    <td className="py-3.5 px-3 text-slate-400 font-mono text-center whitespace-nowrap">{g.stt || idx + 1}</td>
+                    <td className="py-3.5 px-3.5 font-mono font-bold text-blue-700 bg-blue-50/40 whitespace-nowrap">
                       {g.maLo}
                     </td>
-                    <td className="py-3 px-3.5">
+                    <td className="py-3.5 px-3.5 whitespace-nowrap">
                       {g.trangThai === "Mai táng" && (
-                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mr-1.5"></span>
                           Mai táng
                         </span>
                       )}
                       {g.trangThai === "Mộ chờ" && (
-                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
                           Mộ chờ
                         </span>
                       )}
                       {g.trangThai === "Trống" && (
-                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 whitespace-nowrap">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
                           Trống
                         </span>
                       )}
                     </td>
-                    <td className="py-3 px-3.5 font-bold text-slate-900">{g.nguoiDuocCap}</td>
-                    <td className="py-3 px-3.5 font-mono text-slate-600">{g.cccd || "—"}</td>
-                    <td className="py-3 px-3.5 font-medium">{g.nguoiLienHe || "—"}</td>
-                    <td className="py-3 px-3.5 font-mono">
+                    <td className="py-3.5 px-3.5 font-bold text-slate-900 whitespace-nowrap">{g.nguoiDuocCap}</td>
+                    <td className="py-3.5 px-3.5 font-mono text-slate-600 whitespace-nowrap">{g.cccd || "—"}</td>
+                    <td className="py-3.5 px-3.5 font-medium whitespace-nowrap">{g.nguoiLienHe || "—"}</td>
+                    <td className="py-3.5 px-3.5 font-mono whitespace-nowrap">
                       {g.soDienThoai ? (
                         <span className="text-slate-800">{g.soDienThoai}</span>
                       ) : (
-                        <span className="inline-flex items-center text-amber-600 text-[11px] font-medium">
+                        <span className="inline-flex items-center text-amber-600 text-[11px] font-medium whitespace-nowrap">
                           <AlertTriangle className="w-3 h-3 mr-0.5" /> Chưa có
                         </span>
                       )}
                     </td>
-                    <td className="py-3 px-3.5 max-w-xs truncate text-slate-500" title={g.quyetDinhCapDat || ""}>
+                    <td className="py-3.5 px-3.5 max-w-sm truncate text-slate-600" title={g.quyetDinhCapDat || ""}>
                       {g.quyetDinhCapDat || "—"}
                     </td>
-                    <td className="py-3 px-3.5 max-w-xs truncate text-slate-500" title={g.diaChi || ""}>
+                    <td className="py-3.5 px-3.5 max-w-sm truncate text-slate-600" title={g.diaChi || ""}>
                       {g.diaChi || "—"}
                     </td>
-                    <td className="py-3 px-3.5 text-center">
+                    <td className="py-3.5 px-3.5 text-center whitespace-nowrap">
                       <Link
                         href={`/grave/${encodeURIComponent(g.maLo)}`}
                         target="_blank"
-                        className="text-blue-600 hover:text-blue-800 p-1 inline-block"
+                        className="text-blue-600 hover:text-blue-800 p-1.5 rounded-lg hover:bg-blue-100/60 inline-flex items-center justify-center transition"
                         title="Xem trang công khai"
                       >
                         <ExternalLink className="w-4 h-4" />
