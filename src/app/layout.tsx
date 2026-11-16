@@ -25,7 +25,7 @@ export default function RootLayout({
         {/* Top Announcement Bar */}
         <div className="bg-slate-900 text-slate-300 text-[11px] py-1 px-4 text-center border-b border-slate-800 tracking-wide font-medium flex items-center justify-center space-x-2">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Hệ Thống Dữ Liệu Số Hóa Chính Thức — UBND Xã Biển Hồ, TP. Pleiku, Tỉnh Gia Lai</span>
+          <span>Hệ Thống Dữ Liệu Số Hóa Chính Thức — Xã Biển Hồ, Tỉnh Gia Lai</span>
         </div>
 
         {/* Navigation / Header - Gradient Xanh Dương Sang Trọng */}
@@ -41,7 +41,7 @@ export default function RootLayout({
                     NGHĨA TRANG TRÀ ĐA
                   </h1>
                   <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-semibold tracking-wider text-blue-100 uppercase">
-                    TP. Pleiku
+                    Gia Lai
                   </span>
                 </div>
                 <p className="text-xs text-blue-100/90 font-normal">

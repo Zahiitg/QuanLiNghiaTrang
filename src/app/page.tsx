@@ -11,7 +11,6 @@ import {
   Layers,
   LayoutGrid,
   Map as MapIcon,
-  CheckCircle2,
   Compass,
   Navigation,
   ChevronLeft,
@@ -53,30 +52,7 @@ const LOT_TABS: LotTab[] = [
     label: `A${i + 9}`,
     status: "planned" as LotStatus,
   })),
-];
-
-const LOT_STATUS_LABEL: Record<LotStatus | "all", string> = {
-  all: "",
-  used: "Đã sử dụng",
-  active: "Đang sử dụng",
-  planned: "Quy hoạch",
-};
-
-const LOT_STATUS_COLOR: Record<LotStatus | "all", string> = {
-  all: "bg-blue-600 text-white",
-  used: "bg-slate-200 text-slate-700",
-  active: "bg-blue-600 text-white",
-  planned: "bg-emerald-100 text-emerald-700",
-};
-
-const LOT_STATUS_BADGE: Record<LotStatus | "all", string> = {
-  all: "",
-  used: "bg-slate-300 text-slate-600",
-  active: "bg-blue-500 text-white",
-  planned: "bg-emerald-200 text-emerald-800",
-};
-
-export default function HomePage() {
+];export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("ALL");
   const [selectedZone, setSelectedZone] = useState("ALL");
@@ -235,12 +211,7 @@ export default function HomePage() {
                   <strong>Tổng cộng 32 Lô (Tên Lô: MT.A1 – A32)</strong>
                 </span>
               </div>
-              <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-                <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
-                <span>
-                  Đang số hóa dữ liệu: <strong>Lô MT.A7</strong>
-                </span>
-              </div>
+
               <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
                 <Compass className="w-3.5 h-3.5 text-blue-600" />
                 <span>
@@ -282,67 +253,34 @@ export default function HomePage() {
       ═══════════════════════════════════════════════════════════════════ */}
       <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
         {/* Tiêu đề phân khu */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-gradient-to-r from-blue-50/60 to-slate-50">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 bg-gradient-to-r from-blue-50/60 to-slate-50">
           <div className="flex items-center space-x-2">
             <Layers className="w-4 h-4 text-blue-600" />
             <span className="font-bold text-sm text-slate-800">
               Phân Khu: Nghĩa trang Trà Đa
             </span>
-          </div>
-          <div className="flex items-center gap-3 text-[11px] font-semibold">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-slate-400 inline-block"></span>
-              <span className="text-slate-500">Đã sử dụng (A1–A7)</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-blue-600 inline-block"></span>
-              <span className="text-blue-700">Đang sử dụng (A8)</span>
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-              <span className="text-emerald-700">Quy hoạch (A9–A32)</span>
+            <span className="text-xs text-slate-400 font-normal">
+              — 32 Lô (MT.A1 – A32)
             </span>
           </div>
         </div>
 
-        {/* Tab Lô — thanh cuộn ngang */}
+        {/* Tab Lô — thanh cuộn ngang, tất cả tab đồng kích cỡ */}
         <div className="overflow-x-auto scrollbar-hide px-4 py-3">
           <div className="flex items-center gap-1.5 w-max">
             {LOT_TABS.map((tab) => {
               const isActive = selectedZone === tab.key;
-              let tabCls = "";
-              if (isActive) {
-                tabCls =
-                  tab.status === "planned"
-                    ? "bg-emerald-600 text-white shadow-sm"
-                    : tab.status === "used"
-                    ? "bg-slate-600 text-white shadow-sm"
-                    : "bg-blue-600 text-white shadow-sm";
-              } else {
-                tabCls =
-                  tab.status === "planned"
-                    ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200"
-                    : tab.status === "used"
-                    ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200"
-                    : tab.key === "ALL"
-                    ? "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200"
-                    : "bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200";
-              }
-
               return (
                 <button
                   key={tab.key}
                   onClick={() => setSelectedZone(tab.key)}
-                  className={`flex flex-col items-center px-3 py-1.5 rounded-xl transition text-xs font-semibold whitespace-nowrap ${tabCls}`}
+                  className={`px-3.5 py-1.5 rounded-xl transition text-xs font-semibold whitespace-nowrap min-w-[56px] text-center ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-700 border border-slate-200"
+                  }`}
                 >
-                  <span>{tab.key === "ALL" ? "Tất cả" : `MT.${tab.label}`}</span>
-                  {tab.status !== "all" && (
-                    <span
-                      className={`text-[9px] font-normal mt-0.5 opacity-80`}
-                    >
-                      {LOT_STATUS_LABEL[tab.status]}
-                    </span>
-                  )}
+                  {tab.key === "ALL" ? "Tất cả" : `MT.${tab.label}`}
                 </button>
               );
             })}
@@ -385,7 +323,7 @@ export default function HomePage() {
               { key: "Mộ chờ", label: "Mộ chờ (Sinh phần)", cls: "amber" },
               {
                 key: "Trống",
-                label: `Lô đất trống (${countTrong})`,
+                label: "Lô đất trống",
                 cls: "emerald",
               },
             ].map((btn) => {
