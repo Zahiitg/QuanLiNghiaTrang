@@ -130,6 +130,7 @@ export default function AdminDashboardPage() {
 
   const total = graves.length;
   const totalMaiTang = graves.filter((g) => g.trangThai === "Mai táng").length;
+  const totalCaiTang = graves.filter((g) => g.trangThai === "Mộ cải táng").length;
   const totalMoCho = graves.filter((g) => g.trangThai === "Mộ chờ").length;
   const totalTrong = graves.filter((g) => g.trangThai === "Trống").length;
 
@@ -293,8 +294,9 @@ export default function AdminDashboardPage() {
             >
               <option value="ALL">Tất cả Trạng thái ({total})</option>
               <option value="Mai táng">Đã Mai táng ({totalMaiTang})</option>
-              <option value="Mộ chờ">Mộ chờ ({totalMoCho})</option>
-              <option value="Trống">Lô Trống ({totalTrong})</option>
+              <option value="Mộ cải táng">Mộ cải táng ({totalCaiTang})</option>
+              <option value="Mộ chờ">Mộ chờ (Sinh phần) ({totalMoCho})</option>
+              <option value="Trống">Khu mộ trống ({totalTrong})</option>
             </select>
 
             <button
@@ -336,19 +338,25 @@ export default function AdminDashboardPage() {
                       {g.trangThai === "Mai táng" && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
                           <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mr-1.5"></span>
-                          Mai táng
+                          Đã Mai táng
+                        </span>
+                      )}
+                      {g.trangThai === "Mộ cải táng" && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 whitespace-nowrap">
+                          <span className="w-1.5 h-1.5 rounded-full bg-purple-600 mr-1.5"></span>
+                          Mộ cải táng
                         </span>
                       )}
                       {g.trangThai === "Mộ chờ" && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
-                          Mộ chờ
+                          Mộ chờ (Sinh phần)
                         </span>
                       )}
                       {g.trangThai === "Trống" && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 whitespace-nowrap">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
-                          Trống
+                          Khu mộ trống
                         </span>
                       )}
                     </td>
@@ -436,9 +444,10 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setFormData({ ...formData, trangThai: e.target.value })}
                     className="w-full mt-1.5 p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                   >
-                    <option value="Mai táng">Mai táng</option>
+                    <option value="Mai táng">Đã mai táng</option>
+                    <option value="Mộ cải táng">Mộ cải táng</option>
                     <option value="Mộ chờ">Mộ chờ (Sinh phần)</option>
-                    <option value="Trống">Trống</option>
+                    <option value="Trống">Khu mộ trống</option>
                   </select>
                 </div>
               </div>

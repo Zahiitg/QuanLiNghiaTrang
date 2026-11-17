@@ -87,6 +87,14 @@ export default async function GraveDetailPage({ params }: Props) {
         </span>
       );
     }
+    if (status === "Mộ cải táng") {
+      return (
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+          <span className="w-2 h-2 rounded-full bg-purple-500 mr-2"></span>
+          Mộ cải táng
+        </span>
+      );
+    }
     if (status === "Mộ chờ") {
       return (
         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200">
@@ -98,7 +106,7 @@ export default async function GraveDetailPage({ params }: Props) {
     return (
       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
         <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
-        Lô đất trống
+        Khu mộ trống
       </span>
     );
   };
@@ -151,10 +159,16 @@ export default async function GraveDetailPage({ params }: Props) {
             </div>
 
             <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-1">
-              <span className="text-slate-400 font-medium">Ngày mất / Năm mất:</span>
+              <span className="text-slate-400 font-medium">
+                {grave.trangThai === "Trống" ? "Hiện trạng:" : "Ngày mất / Năm mất:"}
+              </span>
               <p className="text-sm font-bold text-slate-800">
                 {grave.trangThai === "Mộ chờ" ? (
-                  <span className="text-amber-700 font-medium">Mộ chờ</span>
+                  <span className="text-amber-700 font-medium">Mộ chờ (Sinh phần)</span>
+                ) : grave.trangThai === "Mộ cải táng" ? (
+                  <span className="text-purple-700 font-medium">Đã cải táng</span>
+                ) : grave.trangThai === "Trống" ? (
+                  <span className="text-emerald-700 font-medium">Khu mộ trống (Sẵn sàng cấp)</span>
                 ) : (
                   formatDateVN(grave.ngayMat)
                 )}

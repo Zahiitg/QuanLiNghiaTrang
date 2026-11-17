@@ -25,7 +25,7 @@ export default function RootLayout({
         {/* Top Announcement Bar */}
         <div className="bg-slate-900 text-slate-300 text-[11px] py-1 px-4 text-center border-b border-slate-800 tracking-wide font-medium flex items-center justify-center space-x-2">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Hệ Thống Dữ Liệu Số Hóa Chính Thức — Xã Biển Hồ, Tỉnh Gia Lai</span>
+          <span>Hệ Thống Dữ Liệu Số Hóa Chính Thức — Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai</span>
         </div>
 
         {/* Navigation / Header - Gradient Xanh Dương Sang Trọng */}
@@ -61,7 +61,7 @@ export default function RootLayout({
         </header>
 
         {/* Main Content */}
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 w-full bg-slate-50/50">{children}</main>
 
         {/* Footer */}
         <footer className="bg-white border-t border-slate-200 mt-16 text-slate-600">
