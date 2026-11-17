@@ -50,12 +50,8 @@ export default function RootLayout({
               </div>
             </a>
 
-            {/* Right Badge */}
+            {/* Right Side */}
             <div className="flex items-center space-x-2">
-              <div className="text-xs text-blue-50 font-medium hidden sm:flex items-center space-x-2 bg-white/15 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-white/20 shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Dữ Liệu Đang Hoạt Động</span>
-              </div>
             </div>
           </div>
         </header>
@@ -92,11 +88,8 @@ export default function RootLayout({
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 pt-2 gap-2">
-              <p>© 2026 Hệ thống Quản lý Nghĩa trang Trà Đa (nghiatrangtrada.vn)</p>
-              <p className="flex items-center space-x-3">
-                <span>Phiên bản v2.0 (Supabase Cloud)</span>
-              </p>
+            <div className="flex items-center justify-center text-center text-xs text-slate-400 pt-2">
+              <p>© 2026 Hệ thống Quản lý Nghĩa trang Trà Đa (quanlynghiatrang.vercel.app)</p>
             </div>
           </div>
         </footer>

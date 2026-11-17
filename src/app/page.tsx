@@ -70,6 +70,15 @@ const LOT_TABS: LotTab[] = [
   })),
 ];
 
+// Danh sách ảnh giới thiệu Nghĩa trang Trà Đa
+const CEMETERY_SLIDES = [
+  { src: "/images/ec6b0dd5e3d2548c0dc3.avif", alt: "Toàn cảnh Nghĩa trang Trà Đa" },
+  { src: "/images/images.jpg", alt: "Khuôn viên quy hoạch an táng Trà Đa" },
+  { src: "/images/images (1).jpg", alt: "Cổng vào Nghĩa trang Trà Đa" },
+  { src: "/images/images (2).jpg", alt: "Hạ tầng cây xanh và đường nội bộ" },
+  { src: "/images/images (3).jpg", alt: "Khu vực phân lô an táng số hóa" },
+];
+
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("ALL");
@@ -99,6 +108,16 @@ export default function HomePage() {
   const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [sortBy, setSortBy] = useState<"NEWEST" | "OLDEST" | "NAME_AZ" | "NAME_ZA">("NEWEST");
   const [filterYear, setFilterYear] = useState<"ALL" | "BEFORE_2000" | "AFTER_2000">("ALL");
+
+  // ── Tự động cuộn ảnh giới thiệu (Auto Carousel) ──────────────────────────
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const slideTimer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % CEMETERY_SLIDES.length);
+    }, 3500);
+    return () => clearInterval(slideTimer);
+  }, []);
 
   // ── Fetch dữ liệu ─────────────────────────────────────────────────────────
   const fetchGraves = async (query: string, status: string) => {
@@ -454,29 +473,32 @@ export default function HomePage() {
           <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-8 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-100/50 via-indigo-50/30 to-transparent rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
 
-            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="space-y-3 max-w-2xl">
+            <div className="relative z-10 flex flex-col xl:flex-row items-stretch justify-between gap-6">
+              {/* Ô 2: Thông tin giới thiệu chi tiết */}
+              <div className="space-y-3 flex-1 min-w-0 max-w-xl">
                 <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold">
-                  <ShieldCheck className="w-4 h-4 text-blue-600" />
+                  <ShieldCheck className="w-4 h-4 text-blue-600 flex-shrink-0" />
                   <span>Hệ Thống Thông Tin Địa Lý (GIS) Quản Lý Nghĩa Trang Đô Thị</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
                   Cổng Tra Cứu Thông Tin Mộ Phần Tại Nghĩa Trang Trà Đa
                 </h1>
 
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Ứng dụng công nghệ bản đồ số hóa quy hoạch phân lô, quản lý hiện
-                  trạng sử dụng đất an táng và hỗ trợ thân nhân tra cứu vị trí, chỉ
-                  đường thông minh tại xã Biển Hồ, tỉnh Gia Lai.
-                </p>
+                <div className="text-xs text-slate-600 leading-relaxed space-y-1.5 text-justify">
+                  <p>
+                    Hệ thống chuyển đổi số toàn diện do <strong>Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai</strong> triển khai tại xã Biển Hồ. Ứng dụng tích hợp công nghệ GIS nhằm số hóa cơ sở dữ liệu hồ sơ an táng, quản lý hiện trạng quỹ đất minh bạch và chính xác theo từng phân khu.
+                  </p>
+                  <p className="hidden sm:block">
+                    Hỗ trợ thân nhân tra cứu thông tin nhanh chóng theo họ tên, ngày mất hoặc mã định danh lô mộ; tích hợp bản đồ số dẫn đường GPS đến tận vị trí phần mộ và xuất mã QR số hóa cho từng hồ sơ quản lý.
+                  </p>
+                </div>
 
-                <div className="flex flex-wrap items-center gap-3 pt-2 text-xs">
+                <div className="flex flex-wrap items-center gap-2.5 pt-1 text-xs">
                   <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
                     <Layers className="w-3.5 h-3.5 text-blue-600" />
                     <span>
-                      Phân bố:{" "}
-                      <strong>Tổng cộng 32 Lô (Tên Lô: MT.A1 – A32)</strong>
+                      Phân bố: <strong>Tổng cộng 32 Lô (MT.A1 – A32)</strong>
                     </span>
                   </div>
 
@@ -489,8 +511,45 @@ export default function HomePage() {
                 </div>
               </div>
 
+              {/* Ô 3: Trình chiếu ảnh cuộn tự động (Auto Carousel) */}
+              <div className="w-full xl:w-80 h-48 sm:h-56 xl:h-auto min-h-[200px] rounded-2xl overflow-hidden border border-slate-200 shadow-inner relative flex-shrink-0 bg-slate-900 group">
+                {CEMETERY_SLIDES.map((slide, idx) => (
+                  <div
+                    key={slide.src}
+                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                      idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  >
+                    <img
+                      src={slide.src}
+                      alt={slide.alt}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-3">
+                      <span className="text-[11px] font-medium text-white/95 line-clamp-1">
+                        {slide.alt}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Các chấm chỉ số slide */}
+                <div className="absolute bottom-2 right-2.5 z-20 flex items-center space-x-1">
+                  {CEMETERY_SLIDES.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentSlide(i)}
+                      className={`h-1.5 rounded-full transition-all ${
+                        i === currentSlide ? "w-4 bg-white" : "w-1.5 bg-white/50"
+                      }`}
+                      title={`Xem ảnh ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+
               {/* KPI widget – thay đổi theo khu đang chọn */}
-              <div className="bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 flex lg:flex-col justify-between gap-4 flex-shrink-0 min-w-[180px]">
+              <div className="bg-slate-50/80 rounded-2xl border border-slate-200 p-4 sm:p-5 flex xl:flex-col justify-between gap-4 flex-shrink-0 min-w-[170px]">
                 <div className="space-y-1">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                     HIỆN TRẠNG SỐ HÓA
@@ -517,7 +576,7 @@ export default function HomePage() {
                 </div>
 
                 {selectedZoneHasData && (
-                  <div className="space-y-1.5 text-xs border-l lg:border-l-0 lg:border-t border-slate-200 pl-4 lg:pl-0 lg:pt-3">
+                  <div className="space-y-1.5 text-xs border-l xl:border-l-0 xl:border-t border-slate-200 pl-4 xl:pl-0 xl:pt-3">
                     <div className="flex justify-between items-center gap-3">
                       <span className="text-slate-500">Đã mai táng:</span>
                       <strong className="text-blue-600">{kpiData.maiTang}</strong>
