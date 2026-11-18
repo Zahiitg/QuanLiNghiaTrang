@@ -187,6 +187,17 @@ export default function HomePage() {
   const [sortBy, setSortBy] = useState<"NEWEST" | "OLDEST" | "NAME_AZ" | "NAME_ZA">("NEWEST");
   const [filterYear, setFilterYear] = useState<"ALL" | "BEFORE_2000" | "AFTER_2000">("ALL");
 
+  useEffect(() => {
+    // Đọc tham số ?q= từ URL nếu có (từ thanh tìm kiếm nhanh ở Header)
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get("q");
+      if (q) {
+        setSearchTerm(q);
+      }
+    }
+  }, []);
+
   // ── Fetch dữ liệu ─────────────────────────────────────────────────────────
   const fetchGraves = async (query: string, status: string) => {
     setLoading(true);
@@ -420,7 +431,7 @@ export default function HomePage() {
 
         <aside
           className={`
-            fixed top-0 bottom-0 left-0 z-50 w-60 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 ease-in-out
+            fixed top-0 bottom-0 left-0 z-50 w-60 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 ease-in-out overflow-hidden
             lg:sticky lg:top-[68px] lg:h-[calc(100vh-68px)] lg:z-10 lg:translate-x-0 lg:flex-shrink-0
             ${mobileSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"}
           `}
@@ -540,7 +551,7 @@ export default function HomePage() {
           </div>
 
           {/* Chú giải trạng thái ở chân Sidebar - Cố định ở đáy Sidebar */}
-          <div className="p-2.5 border-t border-slate-200/90 bg-slate-50/95 text-[10.5px] text-slate-600 space-y-1.5 flex-shrink-0">
+          <div className="p-2.5 border-t border-slate-200/90 bg-slate-50 text-[10.5px] text-slate-600 space-y-1.5 flex-shrink-0 mt-auto">
             <div className="font-bold text-slate-700 text-[10px] uppercase tracking-wider flex items-center justify-between">
               <span>Trạng thái phân khu</span>
               <span className="text-[9px] text-slate-400 font-normal">32 Lô</span>
