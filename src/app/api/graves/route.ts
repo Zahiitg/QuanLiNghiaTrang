@@ -26,9 +26,9 @@ export async function GET(req: NextRequest) {
         ngayMat: true,
         // Bảo mật: Không trả về cccd, so_dien_thoai, nguoi_lien_he, dia_chi
       },
-      orderBy: {
-        stt: "asc",
-      },
+      orderBy: [
+        { maLo: "asc" },
+      ],
     });
 
     if (!query) {

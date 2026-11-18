@@ -48,29 +48,34 @@ interface LotTab {
   key: string;
   label: string;
   status: LotStatus | "all";
-  hasData?: boolean; // true nếu khu này đã có dữ liệu số hóa
+  hasData?: boolean;
 }
+
+// ── Cấu hình trạng thái 32 Lô MT.A1–A32 theo phân loại mới ─────────────────────
+// Dừng hoạt động: A4, A5, A6, A7, A9, A10, A11
+// Đang hoạt động: A8
+// Dự kiến hoạt động: Còn lại (A1, A2, A3, A12–A32)
+const STOPPED_ZONES = new Set(["A4", "A5", "A6", "A7", "A9", "A10", "A11"]);
+const ACTIVE_ZONES = new Set(["A8"]);
+const HAS_DATA_ZONES = new Set(["A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11"]);
 
 const LOT_TABS: LotTab[] = [
   { key: "ALL", label: "Tất cả", status: "all" },
-  // A1–A6: dừng hoạt động, chưa có dữ liệu
-  ...Array.from({ length: 6 }, (_, i) => ({
-    key: `A${i + 1}`,
-    label: `A${i + 1}`,
-    status: "stopped" as LotStatus,
-    hasData: false,
-  })),
-  // A7: dừng hoạt động nhưng có dữ liệu số hóa
-  { key: "A7", label: "A7", status: "stopped" as LotStatus, hasData: true },
-  // A8: đang hoạt động
-  { key: "A8", label: "A8", status: "active" as LotStatus, hasData: false },
-  // A9–A32: dự kiến đưa vào hoạt động
-  ...Array.from({ length: 24 }, (_, i) => ({
-    key: `A${i + 9}`,
-    label: `A${i + 9}`,
-    status: "planned" as LotStatus,
-    hasData: false,
-  })),
+  ...Array.from({ length: 32 }, (_, i) => {
+    const key = `A${i + 1}`;
+    let status: LotStatus = "planned";
+    if (ACTIVE_ZONES.has(key)) {
+      status = "active";
+    } else if (STOPPED_ZONES.has(key)) {
+      status = "stopped";
+    }
+    return {
+      key,
+      label: key,
+      status,
+      hasData: HAS_DATA_ZONES.has(key),
+    };
+  }),
 ];
 
 // Danh sách hình ảnh thực tế Nghĩa trang Trà Đa (D:\Quanli_NghiaTrang\images)
@@ -238,7 +243,8 @@ export default function HomePage() {
     let list = results.filter((item) => {
       if (selectedZone === "ALL") return true;
       const lotNum = selectedZone.replace("A", "");
-      return item.maLo.toLowerCase().startsWith(`mta${lotNum}`);
+      const regex = new RegExp(`^mta${lotNum}[^0-9]`, "i");
+      return regex.test(item.maLo);
     });
 
     // 2. Lọc theo Năm mất: Trước 2000 hoặc Sau 2000
@@ -494,7 +500,7 @@ export default function HomePage() {
                         setSelectedZone(tab.key);
                         setMobileSidebarOpen(false);
                       }}
-                      className={`flex items-center justify-between px-2 py-1.5 rounded-lg text-xs font-semibold transition border ${isActive
+                      className={`flex items-center justify-between px-2.5 h-8 rounded-lg text-xs font-semibold transition border w-full ${isActive
                         ? "bg-blue-600 text-white border-blue-600 shadow-xs"
                         : isOperating
                           ? "bg-emerald-50/70 text-emerald-900 border-emerald-200 hover:bg-emerald-100/80"
@@ -556,27 +562,33 @@ export default function HomePage() {
               <span>Trạng thái phân khu</span>
               <span className="text-[9px] text-slate-400 font-normal">32 Lô</span>
             </div>
-            <div className="space-y-1 text-[10px]">
+            <div className="space-y-1.5 text-[10px]">
               <div className="flex items-center justify-between">
                 <span className="flex items-center space-x-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span className="text-slate-700">Đang hoạt động</span>
+                  <span className="text-slate-700 font-medium">Đang hoạt động</span>
                 </span>
-                <span className="text-[9px] font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-1 py-0.2 rounded font-semibold">MT.A8</span>
+                <span className="w-[84px] text-center text-[9px] font-mono text-emerald-850 bg-emerald-50 border border-emerald-300 py-0.5 rounded font-bold shadow-2xs">
+                  MT.A8
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center space-x-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
-                  <span className="text-slate-600">Dừng hoạt động</span>
+                  <span className="text-slate-600 font-medium">Dừng hoạt động</span>
                 </span>
-                <span className="text-[9px] font-mono text-slate-600 bg-slate-100 border border-slate-200 px-1 py-0.2 rounded">A1 – A7</span>
+                <span className="w-[84px] text-center text-[8.5px] font-mono text-slate-700 bg-slate-100 border border-slate-300 py-0.5 rounded font-semibold shadow-2xs" title="A4, A5, A6, A7, A9, A10, A11">
+                  A4-7, A9-11
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center space-x-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                  <span className="text-slate-600">Dự kiến hoạt động</span>
+                  <span className="text-slate-600 font-medium">Dự kiến hoạt động</span>
                 </span>
-                <span className="text-[9px] font-mono text-slate-600 bg-slate-100 border border-slate-200 px-1 py-0.2 rounded">A9 – A32</span>
+                <span className="w-[84px] text-center text-[8.5px] font-mono text-amber-800 bg-amber-50 border border-amber-300 py-0.5 rounded font-semibold shadow-2xs" title="A1-A3, A12-A32">
+                  Còn lại (24)
+                </span>
               </div>
             </div>
           </div>
