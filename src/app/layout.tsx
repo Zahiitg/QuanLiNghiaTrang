@@ -63,9 +63,6 @@ export default function RootLayout({
 
               {/* CỘT 2 (Giữa): Dòng chào mừng CHẠY TỰ ĐỘNG (Dàn ngang) */}
               <div className="flex-1 min-w-0 hidden md:flex items-center bg-black/15 hover:bg-black/20 border border-white/20 rounded-full px-3.5 py-1.5 shadow-inner backdrop-blur-sm overflow-hidden relative mx-2">
-                <span className="text-xs mr-2 flex-shrink-0 select-none animate-pulse">
-                  📢
-                </span>
                 <div className="overflow-hidden w-full relative">
                   <div className="animate-marquee inline-block whitespace-nowrap text-xs text-blue-100 font-medium tracking-wide">
                     <span>Chào mừng quý thân nhân và nhân dân đến với </span>
