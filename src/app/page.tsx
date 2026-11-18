@@ -348,8 +348,8 @@ export default function HomePage() {
                 setMobileSidebarOpen(false);
               }}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition ${selectedZone === "ALL"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
-                  : "bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                : "bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200"
                 }`}
             >
               <span className="flex items-center space-x-2">
@@ -379,12 +379,12 @@ export default function HomePage() {
                         setMobileSidebarOpen(false);
                       }}
                       className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold transition border ${isActive
-                          ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-                          : isOperating
-                            ? "bg-blue-50/70 text-blue-900 border-blue-200 hover:bg-blue-100/80"
-                            : isStopped
-                              ? "bg-slate-100/80 text-slate-600 border-slate-200 hover:bg-slate-200/80"
-                              : "bg-white text-slate-500 border-slate-200/80 hover:border-slate-300 hover:bg-slate-50"
+                        ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                        : isOperating
+                          ? "bg-blue-50/70 text-blue-900 border-blue-200 hover:bg-blue-100/80"
+                          : isStopped
+                            ? "bg-slate-100/80 text-slate-600 border-slate-200 hover:bg-slate-200/80"
+                            : "bg-white text-slate-500 border-slate-200/80 hover:border-slate-300 hover:bg-slate-50"
                         }`}
                       title={
                         isOperating
@@ -458,7 +458,7 @@ export default function HomePage() {
                 </div>
 
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                  Cổng Tra Cứu Thông Tin Mộ Phần Tại Nghĩa Trang Trà Đa
+                  CỔNG TRA CỨU THÔNG TIN MỘ PHẦN TẠI NGHĨA TRANG TRÀ ĐA
                 </h1>
 
                 <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-1.5 text-justify">
@@ -611,8 +611,8 @@ export default function HomePage() {
                 <button
                   onClick={() => setViewMode("LIST")}
                   className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg transition ${viewMode === "LIST"
-                      ? "bg-white text-blue-700 shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
+                    ? "bg-white text-blue-700 shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
                     }`}
                 >
                   <LayoutGrid className="w-3.5 h-3.5" />
@@ -621,8 +621,8 @@ export default function HomePage() {
                 <button
                   onClick={() => setViewMode("MAP")}
                   className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg transition ${viewMode === "MAP"
-                      ? "bg-white text-blue-700 shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
+                    ? "bg-white text-blue-700 shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
                     }`}
                 >
                   <MapIcon className="w-3.5 h-3.5" />
@@ -729,8 +729,8 @@ export default function HomePage() {
                   <button
                     onClick={() => setShowFilterPanel(!showFilterPanel)}
                     className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition border ${showFilterPanel || activeFilterCount > 0
-                        ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-                        : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300"
+                      ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                      : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300"
                       }`}
                   >
                     <SlidersHorizontal className="w-3.5 h-3.5" />
@@ -783,8 +783,8 @@ export default function HomePage() {
                             key={opt.key}
                             onClick={() => setSortBy(opt.key as any)}
                             className={`px-2.5 py-1.5 rounded-lg text-left text-xs font-medium transition border ${sortBy === opt.key
-                                ? "bg-blue-50 text-blue-700 border-blue-300 font-bold shadow-2xs"
-                                : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                              ? "bg-blue-50 text-blue-700 border-blue-300 font-bold shadow-2xs"
+                              : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                               }`}
                           >
                             {opt.label}
@@ -808,8 +808,8 @@ export default function HomePage() {
                             key={item.key}
                             onClick={() => setFilterYear(item.key as any)}
                             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition border ${filterYear === item.key
-                                ? "bg-blue-50 text-blue-700 border-blue-300 font-bold shadow-2xs"
-                                : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                              ? "bg-blue-50 text-blue-700 border-blue-300 font-bold shadow-2xs"
+                              : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                               }`}
                           >
                             {item.label}
@@ -961,8 +961,8 @@ export default function HomePage() {
                             key={p}
                             onClick={() => setCurrentPage(p as number)}
                             className={`w-9 h-9 rounded-xl text-xs font-bold transition border ${currentPage === p
-                                ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-                                : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                              ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                              : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                               }`}
                           >
                             {p}
