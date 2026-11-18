@@ -22,6 +22,9 @@ import {
   RotateCcw,
   Eye,
   EyeOff,
+  FileText,
+  Download,
+  ExternalLink,
 } from "lucide-react";
 
 interface GraveItem {
@@ -70,6 +73,71 @@ const LOT_TABS: LotTab[] = [
   })),
 ];
 
+// Danh sách hình ảnh thực tế Nghĩa trang Trà Đa (D:\Quanli_NghiaTrang\images)
+const CEMETERY_SLIDES = [
+  {
+    src: "/images/photo-1-16075677786631691238108.jpg",
+    title: "Toàn cảnh khuôn viên quy hoạch Nghĩa trang Trà Đa",
+    subtitle: "Quy hoạch phân khu đồng bộ, cảnh quan cây xanh và môi trường thanh tịnh",
+  },
+  {
+    src: "/images/photo-24-1607567779897675660213.jpg",
+    title: "Hạ tầng giao thông và không gian an táng văn minh",
+    subtitle: "Tuyến đường nội bộ kết nối thuận tiện giữa 32 phân khu an táng",
+  },
+  {
+    src: "/images/ccffee22-9dc0-4065-8edd-8a0887db706b.jpg",
+    title: "Quy hoạch phân lô an táng Nghĩa trang Trà Đa",
+    subtitle: "Ứng dụng hệ thống thông tin địa lý (GIS) và số hóa cơ sở dữ liệu mộ phần",
+  },
+  {
+    src: "/images/a1f2de15-e4b0-474d-b88c-c104a0f6204a.jpg",
+    title: "Khuôn viên tưởng niệm và an táng trang nghiêm",
+    subtitle: "Quản lý hiện trạng quỹ đất minh bạch, chính xác theo từng phân khu",
+  },
+  {
+    src: "/images/NT3.jpg",
+    title: "Khu vực phân lô mộ phần an táng Trà Đa",
+    subtitle: "Hỗ trợ thân nhân tra cứu thông tin và định vị GPS dẫn đường tận nơi",
+  },
+];
+
+// Danh sách 4 biểu mẫu đơn hành chính chính thức (docs/)
+const ADMINISTRATIVE_DOCS = [
+  {
+    id: "01",
+    title: "Đơn xin cấp đất mai táng",
+    desc: "Thủ tục xin cấp đất an táng cho người mới mất",
+    file: "/docs/don-xin-cap-dat-mai-tang.pdf",
+    badge: "Mai táng",
+    badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
+  },
+  {
+    id: "02",
+    title: "Đơn xin cấp đất cải táng",
+    desc: "Thủ tục xin cấp đất an táng cho mộ cải táng",
+    file: "/docs/don-xin-cap-dat-cai-tang.pdf",
+    badge: "Cải táng",
+    badgeColor: "bg-purple-50 text-purple-700 border-purple-200",
+  },
+  {
+    id: "03",
+    title: "Đơn xin giao đất mộ chờ",
+    desc: "Đăng ký cấp sinh phần cho thân nhân cao tuổi",
+    file: "/docs/don-xin-giao-dat-mo-cho.pdf",
+    badge: "Mộ chờ",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+  },
+  {
+    id: "04",
+    title: "Đơn xin di dời hài cốt",
+    desc: "Thủ tục bốc mộ, hoàn trả mặt bằng và di dời",
+    file: "/docs/don-xin-di-doi-hai-cot.pdf",
+    badge: "Di dời",
+    badgeColor: "bg-rose-50 text-rose-700 border-rose-200",
+  },
+];
+
 export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("ALL");
@@ -80,6 +148,25 @@ export default function HomePage() {
   const [hasSearched, setHasSearched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [mobileDocsOpen, setMobileDocsOpen] = useState(false);
+
+  // ── Trình chiếu ảnh tự động (Auto Carousel) ──────────────────────────────
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const slideTimer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % CEMETERY_SLIDES.length);
+    }, 4500);
+    return () => clearInterval(slideTimer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % CEMETERY_SLIDES.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + CEMETERY_SLIDES.length) % CEMETERY_SLIDES.length);
+  };
 
   // ── Ẩn/hiện thông tin ngày sinh & ngày mất (Private Mode) ────────────────
   const [revealedIds, setRevealedIds] = useState<Set<number>>(new Set());
@@ -289,21 +376,37 @@ export default function HomePage() {
 
   return (
     <div className="w-full min-h-[calc(100vh-65px)]">
-      {/* ── Nút nổi mở Menu Phân Khu trên Mobile & Tablet (< lg) ── */}
-      <div className="lg:hidden sticky top-[65px] z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-2xs">
+      {/* ── Nút nổi mở Menu Phân Khu & Mẫu Đơn trên Mobile & Tablet (< lg) ── */}
+      <div className="lg:hidden sticky top-[65px] z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 py-2 flex items-center justify-between shadow-2xs gap-2">
         <button
           onClick={() => setMobileSidebarOpen(true)}
-          className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 font-bold text-xs border border-blue-200 active:scale-95 transition"
+          className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-blue-50 text-blue-700 font-bold text-xs border border-blue-200 active:scale-95 transition flex-shrink-0"
         >
-          <Menu className="w-4 h-4" />
-          <span>Danh Sách 32 Phân Khu</span>
+          <Menu className="w-3.5 h-3.5" />
+          <span>32 Phân Khu</span>
         </button>
-        <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">
+
+        <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-1 rounded-lg truncate text-center flex-1 max-w-[130px]">
           {selectedZoneLabel}
         </span>
+
+        <button
+          onClick={() => setMobileDocsOpen(true)}
+          className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs border border-emerald-200 active:scale-95 transition flex-shrink-0"
+        >
+          <FileText className="w-3.5 h-3.5" />
+          <span>Mẫu Đơn PDF</span>
+        </button>
       </div>
 
       <div className="flex w-full">
+        {/* Backdrop che mờ màn hình khi mở menu tài liệu trên Mobile */}
+        {mobileDocsOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs lg:hidden"
+            onClick={() => setMobileDocsOpen(false)}
+          />
+        )}
         {/* ═══════════════════════════════════════════════════════════════════
             SIDEBAR ĐIỀU HƯỚNG BÊN TRÁI (Bám sát mép trái toàn trang)
         ═══════════════════════════════════════════════════════════════════ */}
@@ -317,56 +420,58 @@ export default function HomePage() {
 
         <aside
           className={`
-            fixed top-0 bottom-0 left-0 z-50 w-72 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 ease-in-out
-            lg:static lg:z-0 lg:translate-x-0 lg:min-h-screen lg:flex-shrink-0
+            fixed top-0 bottom-0 left-0 z-50 w-60 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 ease-in-out
+            lg:sticky lg:top-[68px] lg:h-[calc(100vh-68px)] lg:z-10 lg:translate-x-0 lg:flex-shrink-0
             ${mobileSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"}
           `}
         >
           {/* Header của Sidebar */}
-          <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-            <div className="flex items-center space-x-2 text-slate-900 font-bold text-sm">
-              <Layers className="w-4 h-4 text-blue-600" />
-              <span>Phân Khu Nghĩa Trang</span>
+          <div className="p-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+            <div className="flex items-center space-x-1.5 text-slate-900 font-bold text-xs uppercase tracking-wider">
+              <Layers className="w-3.5 h-3.5 text-blue-600" />
+              <span>Phân Khu</span>
             </div>
-            <button
-              onClick={() => setMobileSidebarOpen(false)}
-              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center space-x-1">
+              <span className="text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-200/80 px-1.5 py-0.2 rounded-full">
+                32 Lô
+              </span>
+              <button
+                onClick={() => setMobileSidebarOpen(false)}
+                className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
-          <div className="p-3.5 space-y-3 flex-1 overflow-y-auto">
-            <p className="text-[11px] text-slate-500 px-1">
-              Quy hoạch tổng thể: <strong>32 Lô (MT.A1 – A32)</strong>
-            </p>
-
+          <div className="p-2.5 space-y-2 flex-1 overflow-y-auto">
             {/* Nút Chọn Tất cả */}
             <button
               onClick={() => {
                 setSelectedZone("ALL");
                 setMobileSidebarOpen(false);
               }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition ${selectedZone === "ALL"
+              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs font-bold transition ${selectedZone === "ALL"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                 : "bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200"
                 }`}
             >
-              <span className="flex items-center space-x-2">
+              <span className="flex items-center space-x-1.5">
                 <span className={`w-2 h-2 rounded-full ${selectedZone === "ALL" ? "bg-white" : "bg-blue-600"}`}></span>
-                <span>Tất cả các khu</span>
+                <span className="text-[11.5px]">Tất cả các khu</span>
               </span>
-              <span className={`text-[11px] font-mono px-2 py-0.5 rounded-md ${selectedZone === "ALL" ? "bg-white/20 text-white" : "bg-slate-200/70 text-slate-600"}`}>
+              <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-md font-bold ${selectedZone === "ALL" ? "bg-white/20 text-white" : "bg-slate-200/80 text-slate-700"}`}>
                 32
               </span>
             </button>
 
             {/* Lưới các Lô từ MT.A1 đến MT.A32 */}
-            <div className="space-y-1.5 pt-1">
-              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-1">
-                Danh sách lô an táng
+            <div className="space-y-1 pt-0.5">
+              <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-1 flex items-center justify-between">
+                <span>Danh sách lô</span>
+                <span className="text-[9px] text-slate-400 font-normal">A1 – A32</span>
               </div>
-              <div className="grid grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-2 gap-1">
                 {LOT_TABS.filter((t) => t.key !== "ALL").map((tab) => {
                   const isActive = selectedZone === tab.key;
                   const isOperating = tab.status === "active";
@@ -378,12 +483,12 @@ export default function HomePage() {
                         setSelectedZone(tab.key);
                         setMobileSidebarOpen(false);
                       }}
-                      className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold transition border ${isActive
-                        ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                      className={`flex items-center justify-between px-2 py-1.5 rounded-lg text-xs font-semibold transition border ${isActive
+                        ? "bg-blue-600 text-white border-blue-600 shadow-xs"
                         : isOperating
-                          ? "bg-blue-50/70 text-blue-900 border-blue-200 hover:bg-blue-100/80"
+                          ? "bg-emerald-50/70 text-emerald-900 border-emerald-200 hover:bg-emerald-100/80"
                           : isStopped
-                            ? "bg-slate-100/80 text-slate-600 border-slate-200 hover:bg-slate-200/80"
+                            ? "bg-slate-100/70 text-slate-600 border-slate-200 hover:bg-slate-200/70"
                             : "bg-white text-slate-500 border-slate-200/80 hover:border-slate-300 hover:bg-slate-50"
                         }`}
                       title={
@@ -391,10 +496,10 @@ export default function HomePage() {
                           ? "Đang hoạt động"
                           : isStopped
                             ? "Dừng hoạt động"
-                            : "Dự kiến đưa vào hoạt động"
+                            : "Dự kiến hoạt động"
                       }
                     >
-                      <span>MT.{tab.label}</span>
+                      <span className="text-[11px]">MT.{tab.label}</span>
                       {isOperating ? (
                         <span
                           className={`w-2 h-2 rounded-full ${isActive ? "bg-white" : "bg-emerald-500 animate-pulse"
@@ -411,7 +516,7 @@ export default function HomePage() {
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-white/60" : "bg-amber-400"
                             }`}
-                          title="Dự kiến đưa vào hoạt động"
+                          title="Dự kiến hoạt động"
                         ></span>
                       )}
                     </button>
@@ -419,24 +524,49 @@ export default function HomePage() {
                 })}
               </div>
             </div>
+
+            {/* Thẻ hỗ trợ thông tin nhanh trong sidebar */}
+            <div className="pt-1">
+              <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/50 border border-blue-100 space-y-1">
+                <div className="flex items-center space-x-1.5 text-blue-900 font-bold text-[10.5px]">
+                  <HelpCircle className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                  <span>Tra cứu & Chỉ đường</span>
+                </div>
+                <p className="text-[10px] text-slate-600 leading-relaxed">
+                  Tích hợp bản đồ GIS & định vị GPS dẫn đường tận nơi đến từng phần mộ.
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Chú giải trạng thái ở chân Sidebar */}
-          <div className="p-3.5 border-t border-slate-100 bg-slate-50/60 text-[11px] text-slate-600 space-y-1.5">
-            <div className="font-semibold text-slate-700 text-[10px] uppercase tracking-wider">
-              Trạng thái vận hành lô
+          {/* Chú giải trạng thái ở chân Sidebar - Cố định ở đáy Sidebar */}
+          <div className="p-2.5 border-t border-slate-200/90 bg-slate-50/95 text-[10.5px] text-slate-600 space-y-1.5 flex-shrink-0">
+            <div className="font-bold text-slate-700 text-[10px] uppercase tracking-wider flex items-center justify-between">
+              <span>Trạng thái phân khu</span>
+              <span className="text-[9px] text-slate-400 font-normal">32 Lô</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span>Đang hoạt động</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-              <span>Dừng hoạt động</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-              <span>Dự kiến đưa vào hoạt động</span>
+            <div className="space-y-1 text-[10px]">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="text-slate-700">Đang hoạt động</span>
+                </span>
+                <span className="text-[9px] font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-1 py-0.2 rounded font-semibold">MT.A8</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                  <span className="text-slate-600">Dừng hoạt động</span>
+                </span>
+                <span className="text-[9px] font-mono text-slate-600 bg-slate-100 border border-slate-200 px-1 py-0.2 rounded">A1 – A7</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  <span className="text-slate-600">Dự kiến hoạt động</span>
+                </span>
+                <span className="text-[9px] font-mono text-slate-600 bg-slate-100 border border-slate-200 px-1 py-0.2 rounded">A9 – A32</span>
+              </div>
             </div>
           </div>
         </aside>
@@ -444,44 +574,114 @@ export default function HomePage() {
         {/* ═══════════════════════════════════════════════════════════════════
             NỘI DUNG CHÍNH (BÊN PHẢI)
         ═══════════════════════════════════════════════════════════════════ */}
-        <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 space-y-6">
+        <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-6 space-y-6 pb-6">
+          {/* ═══════════════════════════════════════════════════════════════════
+              HERO SLIDESHOW – TRÌNH CHIẾU HÌNH ẢNH NGHĨA TRANG TRÀ ĐA
+          ═══════════════════════════════════════════════════════════════════ */}
+          <div className="relative w-full h-56 sm:h-72 md:h-84 lg:h-96 rounded-3xl overflow-hidden border border-slate-200/90 shadow-md bg-slate-900 group">
+            {CEMETERY_SLIDES.map((slide, idx) => {
+              const isCurrent = idx === currentSlide;
+              return (
+                <div
+                  key={slide.src}
+                  className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                >
+                  <img
+                    src={slide.src}
+                    alt={slide.title}
+                    className="w-full h-full object-cover select-none"
+                  />
+                  {/* Lớp phủ chuyển màu giúp chữ dễ đọc */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent flex flex-col justify-end p-5 sm:p-7 text-white">
+                    <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-600/80 backdrop-blur-md text-[11px] font-semibold w-fit mb-2 shadow-sm border border-white/20">
+                      <span>📸 Toàn Cảnh Nghĩa Trang Trà Đa</span>
+                    </div>
+                    <h3 className="text-base sm:text-xl lg:text-2xl font-black text-white drop-shadow-md">
+                      {slide.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-200/90 mt-1 drop-shadow-sm hidden sm:block">
+                      {slide.subtitle}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Nút lùi / tiến ảnh */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-105 active:scale-95"
+              title="Ảnh trước"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-105 active:scale-95"
+              title="Ảnh kế tiếp"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            {/* Chấm chỉ báo slide (Indicators) */}
+            <div className="absolute bottom-3 sm:bottom-4 right-4 sm:right-6 z-20 flex items-center space-x-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
+              {CEMETERY_SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentSlide(i)}
+                  className={`rounded-full transition-all duration-300 ${i === currentSlide
+                      ? "w-6 h-2 bg-blue-500 shadow-sm"
+                      : "w-2 h-2 bg-white/60 hover:bg-white"
+                    }`}
+                  title={`Xem ảnh ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
           {/* BANNER HEADER */}
           <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-8 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-100/50 via-indigo-50/30 to-transparent rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
 
             <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
               {/* Thông tin giới thiệu chi tiết */}
-              <div className="space-y-3 flex-1 min-w-0 max-w-3xl">
-                <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold">
-                  <ShieldCheck className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              <div className="space-y-3.5 flex-1 min-w-0">
+                <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-blue-50/90 border border-blue-200 text-blue-700 text-xs font-semibold shadow-2xs">
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
                   <span>Hệ Thống Thông Tin Quản Lý Nghĩa Trang Đô Thị</span>
                 </div>
 
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                  CỔNG TRA CỨU THÔNG TIN MỘ PHẦN TẠI NGHĨA TRANG TRÀ ĐA
-                </h1>
+                <div className="space-y-1.5">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-snug">
+                    CỔNG TRA CỨU THÔNG TIN MỘ PHẦN TẠI NGHĨA TRANG TRÀ ĐA
+                  </h1>
+                  <div className="h-1 w-20 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full" />
+                </div>
 
-                <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-1.5 text-justify">
+                <div className="text-xs sm:text-[13.5px] text-slate-600 leading-relaxed space-y-2 text-justify">
                   <p>
-                    Hệ thống chuyển đổi số toàn diện do <strong>Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai</strong> triển khai tại xã Biển Hồ. Ứng dụng tích hợp công nghệ GIS nhằm số hóa cơ sở dữ liệu hồ sơ an táng, quản lý hiện trạng quỹ đất minh bạch và chính xác theo từng phân khu.
+                    Nghĩa trang thành phố Pleiku (thường được gọi phổ biến là <strong>Nghĩa trang Trà Đa</strong>) nằm tại xã Trà Đa, thành phố Pleiku, tỉnh Gia Lai (nay thuộc <strong>xã Biển Hồ, tỉnh Gia Lai</strong>). Đây là một trong những nghĩa trang lớn nhất của tỉnh Gia Lai, nơi an táng của hàng ngàn người dân địa phương cũng như các anh hùng liệt sĩ.
                   </p>
-                  <p className="hidden sm:block">
+                  <p>
+                    Hệ thống Cổng tra cứu thông tin mộ phần do <strong>Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai</strong> triển khai tại Nghĩa trang Trà Đa. Ứng dụng tích hợp công nghệ thông tin nhằm số hóa cơ sở dữ liệu hồ sơ an táng, quản lý hiện trạng quỹ đất minh bạch và chính xác theo từng phân khu.
+                  </p>
+                  <p>
                     Hỗ trợ thân nhân tra cứu thông tin nhanh chóng theo họ tên, ngày mất hoặc mã định danh lô mộ; tích hợp bản đồ số dẫn đường GPS đến tận vị trí phần mộ và xuất mã QR số hóa cho từng hồ sơ quản lý.
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2.5 pt-1 text-xs">
-                  <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                <div className="flex flex-wrap items-center gap-2.5 pt-1.5 text-xs">
+                  <div className="flex items-center space-x-2 bg-slate-50 hover:bg-slate-100/80 transition-colors px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs text-slate-700">
                     <Layers className="w-3.5 h-3.5 text-blue-600" />
                     <span>
-                      Phân bố: <strong>Tổng cộng 32 Lô (MT.A1 – A32)</strong>
+                      Phân bố: <strong className="text-slate-900">Tổng cộng 32 Lô (MT.A1 – A32)</strong>
                     </span>
                   </div>
 
-                  <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                  <div className="flex items-center space-x-2 bg-slate-50 hover:bg-slate-100/80 transition-colors px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs text-slate-700">
                     <Compass className="w-3.5 h-3.5 text-blue-600" />
                     <span>
-                      Điều hướng: <strong>Google Maps GPS</strong>
+                      Điều hướng: <strong className="text-slate-900">Google Maps GPS</strong>
                     </span>
                   </div>
                 </div>
@@ -1088,6 +1288,116 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SIDEBAR PHẢI – MẪU ĐƠN & TÀI LIỆU HÀNH CHÍNH
+        ═══════════════════════════════════════════════════════════════════ */}
+        <aside
+          className={`
+            fixed top-0 bottom-0 right-0 z-50 w-72 bg-white border-l border-slate-200 flex flex-col transition-transform duration-300 ease-in-out
+            lg:sticky lg:top-[68px] lg:h-[calc(100vh-68px)] lg:z-10 lg:translate-x-0 lg:flex-shrink-0 lg:w-64
+            ${mobileDocsOpen ? "translate-x-0 shadow-2xl" : "translate-x-full lg:translate-x-0"}
+          `}
+        >
+          {/* Header */}
+          <div className="p-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+            <div className="flex items-center space-x-1.5 text-slate-900 font-bold text-xs uppercase tracking-wider">
+              <FileText className="w-3.5 h-3.5 text-blue-600" />
+              <span>Mẫu Đơn & Hồ Sơ</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.2 rounded-full">
+                4 Biểu mẫu
+              </span>
+              <button
+                onClick={() => setMobileDocsOpen(false)}
+                className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Danh sách các mẫu đơn (scrollable) */}
+          <div className="p-2.5 space-y-2 flex-1 overflow-y-auto">
+            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-1 flex items-center justify-between">
+              <span>Biểu mẫu hành chính</span>
+              <span className="text-[9px] text-slate-400 font-normal">PDF Tải về</span>
+            </div>
+
+            <div className="space-y-2">
+              {ADMINISTRATIVE_DOCS.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="p-2.5 rounded-xl border border-slate-200/90 bg-white hover:border-blue-300 hover:shadow-2xs transition-all space-y-2 group"
+                >
+                  <div className="flex items-start space-x-2">
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border font-mono flex-shrink-0 mt-0.5 ${doc.badgeColor}`}>
+                      Mẫu {doc.id}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
+                        {doc.title}
+                      </h4>
+                      <p className="text-[10px] text-slate-500 leading-tight mt-0.5">
+                        {doc.desc}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 2 nút thao tác: Xem & Tải về */}
+                  <div className="grid grid-cols-2 gap-1.5 pt-0.5">
+                    <a
+                      href={doc.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center space-x-1 py-1 px-2 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-[10.5px] font-semibold border border-slate-200 transition"
+                      title="Xem trực tiếp trên trình duyệt"
+                    >
+                      <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-blue-600" />
+                      <span>Xem</span>
+                    </a>
+                    <a
+                      href={doc.file}
+                      download
+                      className="flex items-center justify-center space-x-1 py-1 px-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[10.5px] font-semibold shadow-2xs transition active:scale-95"
+                      title="Tải file PDF về máy"
+                    >
+                      <Download className="w-3 h-3" />
+                      <span>Tải về</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Hướng dẫn nộp hồ sơ */}
+            <div className="pt-1">
+              <div className="p-2.5 rounded-xl bg-gradient-to-br from-amber-50/70 to-orange-50/50 border border-amber-200/70 space-y-1.5 text-[10.5px]">
+                <div className="font-bold text-amber-900 flex items-center space-x-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                  <span>Quy trình nộp đơn</span>
+                </div>
+                <p className="text-amber-800/90 text-[10px] leading-relaxed">
+                  1. Tải và điền thông tin vào mẫu đơn.<br />
+                  2. Xin xác nhận của UBND xã/phường.<br />
+                  3. Nộp tại BQL dịch vụ công Quy Nhơn để được cấp đất.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer thông tin tiếp nhận hồ sơ */}
+          <div className="p-2.5 border-t border-slate-200/90 bg-slate-50/95 text-[10px] text-slate-600 space-y-1 flex-shrink-0">
+            <div className="font-bold text-slate-700 uppercase tracking-wider">
+              Cơ quan tiếp nhận
+            </div>
+            <p className="text-slate-500 leading-tight">
+              🏛️ <strong>Ban Quản lý dịch vụ công Quy Nhơn</strong><br />
+              Sở Xây dựng tỉnh Gia Lai
+            </p>
+          </div>
+        </aside>
       </div>
 
     </div>
