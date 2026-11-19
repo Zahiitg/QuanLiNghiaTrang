@@ -654,8 +654,8 @@ export default function HomePage() {
                   key={i}
                   onClick={() => setCurrentSlide(i)}
                   className={`rounded-full transition-all duration-300 ${i === currentSlide
-                      ? "w-6 h-2 bg-blue-500 shadow-sm"
-                      : "w-2 h-2 bg-white/60 hover:bg-white"
+                    ? "w-6 h-2 bg-blue-500 shadow-sm"
+                    : "w-2 h-2 bg-white/60 hover:bg-white"
                     }`}
                   title={`Xem ảnh ${i + 1}`}
                 />
@@ -683,7 +683,7 @@ export default function HomePage() {
 
                 <div className="text-xs sm:text-[13.5px] text-slate-600 leading-relaxed space-y-2 text-justify">
                   <p>
-                    Nghĩa trang thành phố Pleiku (thường được gọi phổ biến là <strong>Nghĩa trang Trà Đa</strong>) nằm tại xã Trà Đa, thành phố Pleiku, tỉnh Gia Lai (nay thuộc <strong>xã Biển Hồ, tỉnh Gia Lai</strong>). Đây là một trong những nghĩa trang lớn nhất của tỉnh Gia Lai, nơi an táng của hàng ngàn người dân địa phương cũng như các anh hùng liệt sĩ.
+                    <strong>Nghĩa Trang Trà Đa</strong> (tên thường gọi phổ biến <strong>Nghĩa trang thành phố Pleiku</strong>) nằm tại xã Trà Đa, thành phố Pleiku, tỉnh Gia Lai (nay thuộc <strong>xã Biển Hồ, tỉnh Gia Lai</strong>). Nghĩa trang phục vụ nhu cầu mai táng, cải táng của người dân khu vực Pleiku và là nơi thân nhân đến thăm viếng, chăm sóc mộ phần.
                   </p>
                   <p>
                     Hệ thống Cổng tra cứu thông tin mộ phần do <strong>Ban Quản lý dịch vụ công Quy Nhơn - Sở Xây dựng tỉnh Gia Lai</strong> triển khai tại Nghĩa trang Trà Đa. Ứng dụng tích hợp công nghệ thông tin nhằm số hóa cơ sở dữ liệu hồ sơ an táng, quản lý hiện trạng quỹ đất minh bạch và chính xác theo từng phân khu.
